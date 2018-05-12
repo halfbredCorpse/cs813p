@@ -1,0 +1,52 @@
+DATABASE client {
+	TABLE accounts {
+		username VARCHAR,
+		password VARCHAR md5,
+		full_name VARCHAR,
+		address VARCHAR,
+		longitude NUMBER,
+		latitude NUMBER,
+		credit_card NUMBER,
+		cvv NUMBER md5
+	}
+	
+	TABLE shopping_cart {
+		item_code NUMBER,
+		item_name VARCHAR,
+		quantity NUMBER
+	}
+}
+
+DATABASE dbManager {
+	TABLE orders {
+		order_num NUMBER,
+		details VARCHAR,
+		client_long NUMBER,
+		client_lat NUMBER,
+		client_addr VARCHAR,
+		client_name VARCHAR,
+		status VARCHAR
+	}
+	
+	TABLE branches {
+		branch_name VARCHAR,
+		branch_long NUMBER,
+		branch_lat NUMBER
+	}
+}
+
+DATABASE branch_name {
+	TABLE orders {
+		order_num NUMBER,
+		details VARCHAR,
+		client_addr VARCHAR,
+		client_name VARCHAR,
+		status VARCHAR
+	}
+	
+	TABLE inventory {
+		item_code NUMBER,
+		item_name VARCHAR,
+		quantity NUMBER
+	}
+}
