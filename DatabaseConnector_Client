@@ -1,0 +1,91 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ *
+ * @author une belle femme
+ */
+public class DatabaseConnector_Client {
+
+    public static String clientDB = "clientdb";
+    public static String accountsTable = "accounts";
+    public static String shoppingTable = "shoppingcart";
+    public static String username = "root";
+    public static String password = "";
+    public static int port = 3306;
+    Statement statement = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    String query = null;
+
+    public Connection connect() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:" + port + "/"
+                + clientDB, username, password);
+    }
+
+    public void createNewUser(String username, String password, String firstname,
+            String lastname, String address, int longitude, int latitude, int creditCard, int cvv) {
+        String user = username;
+        String pass = password;
+        String fname = firstname;
+        String lname = lastname;
+        String add = address;
+        int lati = latitude;
+        int longi = longitude;
+        int credit = creditCard;
+        int cvvNum = cvv;
+
+        try {
+            statement = connect().createStatement();
+            query = "INSERT INTO " + accountsTable + " (username, password, firstname, lastname, address,"
+                    + "longitude, latitude, credit_card, cvv) VALUES (?,MD5(?),?,?,?,?,?,MD5(?))";
+            ps = connect().prepareStatement(query);
+            ps.setString(1, user);
+            ps.setString(2, pass);
+            ps.setString(3, fname);
+            ps.setString(4, lname);
+            ps.setString(5, add);
+            ps.setInt(6, lati);
+            ps.setInt(7, longi);
+            ps.setInt(8, credit);
+            ps.setInt(9, cvvNum);
+            ps.execute();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            //handling errors here
+        }
+
+    }
+    
+    public void addToShoppingCart(int itemCode, String itemName, int qty) {
+        int item_code = itemCode;
+        String item_name = itemName;
+        int quantity = qty;
+        
+        try {
+            statement = connect().createStatement();
+            query = "INSERT INTO " + shoppingTable + " (item_code, item_name, quantity) "
+                    + "VALUES (?,?,?)";
+            ps = connect().prepareStatement(query);
+            ps.setInt(1, item_code);
+            ps.setString(2, item_name);
+            ps.setInt(3, quantity);
+            ps.execute();
+            
+        } catch(ClassNotFoundException | SQLException e) {
+            //error handling here
+        }
+    }
+
+}

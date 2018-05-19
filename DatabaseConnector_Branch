@@ -1,0 +1,84 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author une belle femme
+ */
+public class DatabaseConnector_Branch {
+    
+    public static String branchDB = "branchdb";
+    public static String ordersTable = "orders";
+    public static String inventoryTable = "inventory";
+    public static String username = "root";
+    public static String password = "";
+    public static int port = 3306;
+    Statement statement = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    String query = null;
+
+    public Connection connect() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:" + port + "/"
+                + branchDB, username, password);
+    }
+    
+    public void addOrder(int orderNum, String details, String clientAddr, String clientFname, 
+            String clientLname, String status) {
+        String client_details = details;
+        String client_addr = clientAddr;
+        String client_fname = clientFname;
+        String client_lname = clientLname;
+        String client_status = status;
+        int order_num = orderNum;
+
+        try {
+            statement = connect().createStatement();
+            query = "INSERT INTO " + ordersTable + " (order_num, details, client_long, client_lat"
+                    + "client_addr, client_firstname, client_lastname, status) "
+                    + "VALUES (?,?,?,?,?,?,?)";
+            ps = connect().prepareStatement(query);
+            ps.setInt(1, order_num);
+            ps.setString(2, client_details);
+            ps.setString(3, client_addr);
+            ps.setString(4, client_fname);
+            ps.setString(5, client_lname);
+            ps.setString(6, client_status);
+
+        } catch (ClassNotFoundException | SQLException e) {
+            //error handling
+        }
+    }
+    
+    public void addToInventory(int itemCode, String itemName, int qty) {
+        int item_code = itemCode;
+        String item_name = itemName;
+        int quantity = qty;
+        
+        try {
+            statement = connect().createStatement();
+            query = "INSERT INTO " + inventoryTable + " (item_code, item_name, quantity) "
+                    + "VALUES (?,?,?)";
+            ps = connect().prepareStatement(query);
+            ps.setInt(1, item_code);
+            ps.setString(2, item_name);
+            ps.setInt(3, quantity);
+            ps.execute();
+            
+        } catch(ClassNotFoundException | SQLException e) {
+            //error handling here
+        }
+    }
+}
