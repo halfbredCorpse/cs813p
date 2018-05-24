@@ -1,52 +1,78 @@
 DATABASE client {
-	TABLE accounts {
-		username VARCHAR,
-		password VARCHAR md5,
-		full_name VARCHAR,
-		address VARCHAR,
-		longitude NUMBER,
-		latitude NUMBER,
-		credit_card NUMBER,
-		cvv NUMBER md5
+	TABLE cart {
+		cart_id NUMBER PRIMAMRY KEY,
+		total_cost DECIMAL,
 	}
 	
-	TABLE shopping_cart {
-		item_code NUMBER,
-		item_name VARCHAR,
-		quantity NUMBER
+	TABLE cart_items {
+		isbn VARCHAR,
+		quantity NUMBER,
+		price DECIMAL,
+		subtotal DECIMAL
+		cart_id NUMBER FOREIGN KEY,
+		PRIMARY KEY (isbn, cart_id)
 	}
 }
 
-DATABASE dbManager {
+DATABASE central {
+	TABLE accounts {
+		username VARCHAR PRIMARY KEY,
+		email VARHCHAR,
+		password VARCHAR md5,
+		first_name VARCHAR,
+		last_name VARCHAR,
+		address1 VARCHAR,
+		address2 VARCHAR,
+		longitude NUMBER,
+		latitude NUMBER,
+		credit_card NUMBER,
+		cvv NUMBER md5,
+		cart_id NUMBER
+	}
+	
 	TABLE orders {
-		order_num NUMBER,
+		order_id NUMBER PRIMARY KEY,
 		details VARCHAR,
-		client_long NUMBER,
-		client_lat NUMBER,
-		client_addr VARCHAR,
-		client_name VARCHAR,
-		status VARCHAR
+		total_cost DECIMAL,
+		paid_amount DECIMAL,
+		payment_type VARCHAR,
+		username VARCHAR FOREIGN KEY,
+		status VARCHAR,
 	}
 	
 	TABLE branches {
-		branch_name VARCHAR,
+		branch_name VARCHAR PRIMARY KEY,
 		branch_long NUMBER,
 		branch_lat NUMBER
+	}
+	
+	TABLE books {
+		isbn VARCHAR PRIMARY KEY,
+		title VARCHAR,
+		price DECIMAL,
+		author VARCHAR,
+		publisher VARCHAR,
+		date_published DATE,
+		format VARCHAR,
+		description VARCHAR,
+		genre_id NUMBER FOREIGN KEY
+	}
+	
+	TABLE availabiliy {
+		isbn VARCHAR FOREIGN KEY,
+		branch_name VARCHAR FOREIGN KEY,
+		quantity NUMBER,
+		PRIMAMRY KEY (isbn, branch_name)
+	}
+	
+	TABLE genres {
+		genre_id VARCHAR PRIMARY KEY,
+		genre_name VARCHAR
 	}
 }
 
 DATABASE branch_name {
 	TABLE orders {
-		order_num NUMBER,
-		details VARCHAR,
-		client_addr VARCHAR,
-		client_name VARCHAR,
-		status VARCHAR
-	}
-	
-	TABLE inventory {
-		item_code NUMBER,
-		item_name VARCHAR,
-		quantity NUMBER
+		order_num NUMBER PRIMARY KEY,
 	}
 }
