@@ -5,33 +5,42 @@
  */
 package desktopapp;
 
-import com.placeholder.PlaceHolder;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Jasmin Rose
  */
 public class LoginFrame extends javax.swing.JFrame {
-
+    
+    URI uri = null;
+    
     /**
      * Creates new form LoginFrame
      */
     public LoginFrame() {
         initComponents();
-
-        // Placeholder for username and passw
+        
+        // Change all component fonts
         changeAllFont(mainPanel, createFont("fonts/CircularStd-Bold.otf", 14));
         
-        // Placeholder for username and password
-        PlaceHolder phUser = new PlaceHolder(txtUsername, "Username");
-        PlaceHolder phPass = new PlaceHolder(txtpPassword, "Password");
+        lblLogin.setFont(lblLogin.getFont().deriveFont(18F));
         
+        // Set focus on the login label first rather than username textfield
+        lblLogin.requestFocus();
     }
     
     public Font createFont(String fontPath, int size){
@@ -40,7 +49,7 @@ public class LoginFrame extends javax.swing.JFrame {
         // Load font face to environment
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
-            font  = font.deriveFont(Font.PLAIN, size);
+            font  = font.deriveFont(Font.PLAIN, 14F);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);
         }
@@ -56,6 +65,16 @@ public class LoginFrame extends javax.swing.JFrame {
         if (component instanceof Container ){
             for (Component child : ((Container)component).getComponents()) {
                 changeAllFont(child,font);
+            }
+        }
+    }
+    
+    public static void openSignUp(URI uri) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(uri);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -75,20 +94,42 @@ public class LoginFrame extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         txtUsername = new javax.swing.JTextField();
         txtpPassword = new javax.swing.JPasswordField();
+        jLabel1 = new javax.swing.JLabel();
+        jXHyperlink1 = new org.jdesktop.swingx.JXHyperlink();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
+        setIconImage(new ImageIcon("src/desktopapp/img/Book-o Shack Circle Logo@0,05x.png").getImage());
+        setMinimumSize(new java.awt.Dimension(332, 434));
+        setSize(new java.awt.Dimension(330, 419));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         mainPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         imgLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/Book-o Shack Circle Logo@0,05x.png"))); // NOI18N
 
-        lblLogin.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lblLogin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblLogin.setText("Login");
 
+        btnLogin.setBackground(new java.awt.Color(40, 96, 144));
+        btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Login");
+        btnLogin.setBorder(new javax.swing.border.MatteBorder(null));
+        btnLogin.setOpaque(false);
 
         txtUsername.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        txtUsername.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtUsernameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUsernameFocusLost(evt);
+            }
+        });
 
         txtpPassword.setEchoChar((char)0);
         txtpPassword.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -100,37 +141,61 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Don't have an account?");
+
+        jXHyperlink1.setForeground(new java.awt.Color(40, 96, 144));
+        jXHyperlink1.setText("Sign up now!");
+        jXHyperlink1.setClickedColor(new java.awt.Color(40, 96, 144));
+        jXHyperlink1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jXHyperlink1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(95, 95, 95)
-                .addComponent(imgLogo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lblLogin, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtpPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                    .addComponent(txtUsername)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(31, 31, 31))
+                .addContainerGap(35, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                            .addComponent(imgLogo)
+                            .addGap(107, 107, 107))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtpPassword)
+                                .addGroup(mainPanelLayout.createSequentialGroup()
+                                    .addGap(10, 10, 10)
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(31, 31, 31)))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(lblLogin)
+                        .addGap(59, 59, 59))))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(imgLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addGap(17, 17, 17)
                 .addComponent(lblLogin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGap(18, 18, 18)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -149,13 +214,50 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void txtpPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpPasswordFocusGained
         txtpPassword.setEchoChar('•');
+        txtpPassword.setText("");
+        txtpPassword.setForeground(Color.BLACK);
     }//GEN-LAST:event_txtpPasswordFocusGained
 
     private void txtpPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpPasswordFocusLost
         if("".equalsIgnoreCase(new String(txtpPassword.getPassword()))) {
             txtpPassword.setEchoChar((char)0);
+            txtpPassword.setText("Password");
+            txtpPassword.setForeground(Color.LIGHT_GRAY);
         }
     }//GEN-LAST:event_txtpPasswordFocusLost
+
+    private void txtUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsernameFocusGained
+        txtUsername.setText("");
+        txtUsername.setForeground(Color.BLACK);
+    }//GEN-LAST:event_txtUsernameFocusGained
+
+    private void txtUsernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsernameFocusLost
+        if("".equalsIgnoreCase(txtUsername.getText())) {
+            txtUsername.setText("Username");
+            txtUsername.setForeground(Color.LIGHT_GRAY);
+        }
+    }//GEN-LAST:event_txtUsernameFocusLost
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        //Placeholder for username
+        txtUsername.setText("Username");
+        txtUsername.setForeground(Color.LIGHT_GRAY);
+        
+        //Placeholder for password
+        txtpPassword.setEchoChar((char)0);
+        txtpPassword.setText("Password");
+        txtpPassword.setForeground(Color.LIGHT_GRAY);
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jXHyperlink1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXHyperlink1ActionPerformed
+        try {
+            uri = new URI("Home.html");
+            openSignUp(uri);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jXHyperlink1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,6 +297,8 @@ public class LoginFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel imgLogo;
+    private javax.swing.JLabel jLabel1;
+    private org.jdesktop.swingx.JXHyperlink jXHyperlink1;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTextField txtUsername;
