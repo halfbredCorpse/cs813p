@@ -41,7 +41,7 @@ public class OrdersWS {
             result = prepState.executeQuery();
             
             if (result.next())
-                return true;
+                System.out.println("Yey");
             else
                 return false;
         }

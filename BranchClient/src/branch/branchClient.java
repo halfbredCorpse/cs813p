@@ -274,7 +274,7 @@ public class branchClient extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_logInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logInActionPerformed
-        
+        logInEmployee(jTextField1.getText(), jTextField2.getText());
     }//GEN-LAST:event_btn_logInActionPerformed
 
     private void btn_firstOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_firstOrderActionPerformed
