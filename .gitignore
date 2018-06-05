@@ -22,3 +22,7 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /Client/DesktopApp/nbproject/private/
+/Client/RestFulWS/nbproject/private/
+/Client/RestFulClient/nbproject/private/
+/Client/RestfulClient2/nbproject/private/
+/Client/DesktopAppFX/nbproject/private/
