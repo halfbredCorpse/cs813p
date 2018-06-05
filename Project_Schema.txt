@@ -1,0 +1,69 @@
+DATABASE client {
+	TABLE shopping_cart {
+		isbn NUMBER PRIMARY KEY,
+		quantity NUMBER,
+		subtotal NUMBER
+	}
+}
+
+DATABASE central {
+	TABLE accounts {
+		username VARCHAR PRIMARY KEY,
+		email VARHCHAR,
+		password VARCHAR md5,
+		first_name VARCHAR,
+		last_name VARCHAR,
+		address1 VARCHAR,
+		address2 VARCHAR,
+		longitude NUMBER,
+		latitude NUMBER,
+		credit_card NUMBER,
+		cvv NUMBER md5
+	}
+	
+	TABLE orders {
+		order_id NUMBER PRIMARY KEY,
+		details VARCHAR,
+		total_cost NUMBER,
+		paid_amount NUMBER,
+		payment_type VARCHAR,
+		username VARCHAR FOREIGN KEY,
+		status VARCHAR,
+	}
+	
+	TABLE branches {
+		branch_name VARCHAR PRIMARY KEY,
+		branch_long NUMBER,
+		branch_lat NUMBER
+	}
+	
+	TABLE books {
+		isbn VARCHAR PRIMARY KEY,
+		title VARCHAR,
+		price NUMBER,
+		author VARCHAR,
+		publisher VARCHAR,
+		date_published DATE,
+		- format,
+		description VARCHAR,
+		genre_id NUMBER FOREIGN KEY
+	}
+	
+	TABLE availabiliy {
+		isbn VARCHAR FOREIGN KEY,
+		branch_name VARCHAR FOREIGN KEY,
+		quantity NUMBER,
+		PRIMAMRY KEY (isbn, branch_name)
+	}
+	
+	TABLE genres {
+		genre_id VARCHAR PRIMARY KEY,
+		genre_name VARCHAR
+	}
+}
+
+DATABASE branch_name {
+	TABLE orders {
+		order_num NUMBER PRIMARY KEY,
+	}
+}
