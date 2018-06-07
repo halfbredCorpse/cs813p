@@ -30,6 +30,8 @@ public class CommonDesign {
     private JFrame frame;
     private ImageIcon closeIcon;
     private ImageIcon closeIconHover;
+    private ImageIcon minIcon;
+    private ImageIcon minIconHover;
     
     private int px;
     private int py;
@@ -39,6 +41,9 @@ public class CommonDesign {
         
         closeIcon = new ImageIcon("src\\desktopapp\\img\\Close Window_25px.png");
         closeIconHover = new ImageIcon("src\\desktopapp\\img\\Close Window_hover_25px.png");
+        
+        minIcon = new ImageIcon("src\\desktopapp\\img\\Minimize Window_25px.png");
+        minIconHover = new ImageIcon("src\\desktopapp\\img\\Minimize Window_Hover_25px.png");
         
         frame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(179,136,103)));
    }  
@@ -76,4 +81,13 @@ public class CommonDesign {
     public ImageIcon getImageCloseHover() {
         return closeIconHover;
     }
+    
+    public ImageIcon getImageMin() {
+        return minIcon;
+    }
+    
+    public ImageIcon getImageMinHover() {
+        return minIconHover;
+    }
+    
 }

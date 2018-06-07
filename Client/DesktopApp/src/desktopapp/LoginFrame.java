@@ -21,7 +21,9 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import org.jdesktop.swingx.JXHyperlink;
 
 /**
  *
@@ -76,13 +78,14 @@ public class LoginFrame extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
         titleBar = new javax.swing.JPanel();
         btnClose = new javax.swing.JButton();
+        btnMinimize = new javax.swing.JButton();
         imgLogo = new javax.swing.JLabel();
         lblLogin = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         txtUsername = new javax.swing.JTextField();
         txtpPassword = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
-        jXHyperlink1 = new org.jdesktop.swingx.JXHyperlink();
+        jXHyperlink6 = new org.jdesktop.swingx.JXHyperlink();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
@@ -126,18 +129,40 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
 
+        btnMinimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/Minimize Window_25px.png"))); // NOI18N
+        btnMinimize.setBorderPainted(false);
+        btnMinimize.setContentAreaFilled(false);
+        btnMinimize.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnMinimizeMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnMinimizeMouseExited(evt);
+            }
+        });
+        btnMinimize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMinimizeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout titleBarLayout = new javax.swing.GroupLayout(titleBar);
         titleBar.setLayout(titleBarLayout);
         titleBarLayout.setHorizontalGroup(
             titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titleBarLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         titleBarLayout.setVerticalGroup(
             titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(titleBarLayout.createSequentialGroup()
+                .addComponent(btnMinimize)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         imgLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/Book-o Shack Circle Logo@0,05x.png"))); // NOI18N
@@ -150,8 +175,8 @@ public class LoginFrame extends javax.swing.JFrame {
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Login");
         btnLogin.setBorder(null);
-        btnLogin.setBorderPainted(false);
-        btnLogin.setFocusPainted(false);
+        btnLogin.setContentAreaFilled(false);
+        btnLogin.setOpaque(true);
 
         txtUsername.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         txtUsername.setForeground(new java.awt.Color(98, 109, 113));
@@ -177,12 +202,11 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(98, 109, 113));
         jLabel1.setText("Don't have an account?");
 
-        jXHyperlink1.setForeground(new java.awt.Color(179, 136, 103));
-        jXHyperlink1.setText("Sign up now!");
-        jXHyperlink1.setClickedColor(new java.awt.Color(40, 96, 144));
-        jXHyperlink1.addActionListener(new java.awt.event.ActionListener() {
+        jXHyperlink6.setForeground(new java.awt.Color(179, 136, 103));
+        jXHyperlink6.setText("Sign Up Now!");
+        jXHyperlink6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jXHyperlink1ActionPerformed(evt);
+                jXHyperlink6ActionPerformed(evt);
             }
         });
 
@@ -191,7 +215,7 @@ public class LoginFrame extends javax.swing.JFrame {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
+                .addGap(35, 35, 35)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,7 +233,7 @@ public class LoginFrame extends javax.swing.JFrame {
                         .addGap(48, 48, 48)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jXHyperlink6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
@@ -229,8 +253,8 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                    .addComponent(jXHyperlink6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -284,16 +308,6 @@ public class LoginFrame extends javax.swing.JFrame {
         txtpPassword.setForeground(Color.LIGHT_GRAY);
     }//GEN-LAST:event_formWindowOpened
 
-    private void jXHyperlink1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXHyperlink1ActionPerformed
-        try {
-            uri = new URI("Home.html");
-            openSignUp(uri);
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_jXHyperlink1ActionPerformed
-
     private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
         System.exit(0);
     }//GEN-LAST:event_btnCloseMouseClicked
@@ -314,6 +328,23 @@ public class LoginFrame extends javax.swing.JFrame {
     private void btnCloseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseExited
         btnClose.setIcon(cd.getImageClose());
     }//GEN-LAST:event_btnCloseMouseExited
+
+    private void jXHyperlink6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXHyperlink6ActionPerformed
+        File file = new File("src/desktopapp/webApp/Home.html");
+        openSignUp(file.toURI());
+    }//GEN-LAST:event_jXHyperlink6ActionPerformed
+
+    private void btnMinimizeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMinimizeMouseEntered
+        btnMinimize.setIcon(cd.getImageMinHover());
+    }//GEN-LAST:event_btnMinimizeMouseEntered
+
+    private void btnMinimizeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMinimizeMouseExited
+        btnMinimize.setIcon(cd.getImageMin());
+    }//GEN-LAST:event_btnMinimizeMouseExited
+
+    private void btnMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeActionPerformed
+        setState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_btnMinimizeActionPerformed
     
     /**
      * @param args the command line arguments
@@ -353,9 +384,10 @@ public class LoginFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnMinimize;
     private javax.swing.JLabel imgLogo;
     private javax.swing.JLabel jLabel1;
-    private org.jdesktop.swingx.JXHyperlink jXHyperlink1;
+    private org.jdesktop.swingx.JXHyperlink jXHyperlink6;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel titleBar;
