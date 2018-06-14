@@ -32,7 +32,7 @@ import org.jdesktop.swingx.JXHyperlink;
 public class LoginFrame extends javax.swing.JFrame {
     
     URI uri = null; 
-    Color greyCoffee = null;
+    Color slate, latte, coffee;
     CommonDesign cd;
     
     int px, py;
@@ -42,7 +42,9 @@ public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {
         initComponents();
         
-        greyCoffee =  new Color(98,109,113);
+        slate =  new Color(98,109,113);
+        latte = new Color(221, 188, 149);
+        coffee = new Color(179,136,103);
         
         cd = new CommonDesign(this);
         
@@ -177,6 +179,14 @@ public class LoginFrame extends javax.swing.JFrame {
         btnLogin.setBorder(null);
         btnLogin.setContentAreaFilled(false);
         btnLogin.setOpaque(true);
+        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnLoginMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnLoginMouseExited(evt);
+            }
+        });
 
         txtUsername.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         txtUsername.setForeground(new java.awt.Color(98, 109, 113));
@@ -274,7 +284,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private void txtpPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpPasswordFocusGained
         txtpPassword.setEchoChar('•');
         txtpPassword.setText("");
-        txtpPassword.setForeground(greyCoffee);
+        txtpPassword.setForeground(slate);
     }//GEN-LAST:event_txtpPasswordFocusGained
 
     private void txtpPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpPasswordFocusLost
@@ -287,7 +297,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void txtUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsernameFocusGained
         txtUsername.setText("");
-        txtUsername.setForeground(greyCoffee);
+        txtUsername.setForeground(slate);
     }//GEN-LAST:event_txtUsernameFocusGained
 
     private void txtUsernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsernameFocusLost
@@ -345,6 +355,14 @@ public class LoginFrame extends javax.swing.JFrame {
     private void btnMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeActionPerformed
         setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_btnMinimizeActionPerformed
+
+    private void btnLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseEntered
+        btnLogin.setBackground(latte);
+    }//GEN-LAST:event_btnLoginMouseEntered
+
+    private void btnLoginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseExited
+        btnLogin.setBackground(coffee);
+    }//GEN-LAST:event_btnLoginMouseExited
     
     /**
      * @param args the command line arguments

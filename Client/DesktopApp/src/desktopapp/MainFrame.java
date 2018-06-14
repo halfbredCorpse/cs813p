@@ -54,6 +54,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnHome.setBackground(selectedColor);
         btnHome.setForeground(Color.WHITE);
         
+        /*
         JFXPanel webPanel = new JFXPanel();
      
         webPanel.setBounds(600, 50, 300, 500);
@@ -64,7 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
             File file = new File("src/desktopapp/webApp/Home.html");
             webView.getEngine().load(file.toURI().toString());//("http://10.1.11.21:8080/hello1b_Aguas/");
             webPanel.setScene( new Scene( webView ) );
-        });
+        });*/
     }
 
     public void loopBtns(ButtonGroup btnGroup) {
@@ -98,8 +99,9 @@ public class MainFrame extends javax.swing.JFrame {
         navMenu = new javax.swing.JPanel();
         navBtns = new javax.swing.JPanel();
         btnHome = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnBrowseBooks = new javax.swing.JButton();
+        btnMyCart = new javax.swing.JButton();
+        btnMyOrders = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         imgLogo = new javax.swing.JLabel();
@@ -109,11 +111,19 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jXSearchField1 = new org.jdesktop.swingx.JXSearchField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel3 = new javax.swing.JPanel();
+        slide1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
         jPanel6 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1500, 700));
         setResizable(false);
 
         titleBar.setBackground(new java.awt.Color(179, 136, 103));
@@ -188,7 +198,7 @@ public class MainFrame extends javax.swing.JFrame {
         navMenu.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(205, 205, 192), null));
 
         navBtns.setBackground(new java.awt.Color(255, 255, 255));
-        navBtns.setLayout(new java.awt.GridLayout(5, 0));
+        navBtns.setLayout(new java.awt.GridLayout(6, 0));
 
         btnHome.setBackground(new java.awt.Color(255, 255, 255));
         btnHome.setForeground(new java.awt.Color(98, 109, 113));
@@ -216,55 +226,80 @@ public class MainFrame extends javax.swing.JFrame {
         });
         navBtns.add(btnHome);
 
-        jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setForeground(new java.awt.Color(98, 109, 113));
-        jButton3.setText("My Cart");
-        jButton3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(205, 205, 192)));
-        navBtnGroup.add(jButton3);
-        jButton3.setContentAreaFilled(false);
-        jButton3.setOpaque(true);
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnBrowseBooks.setBackground(new java.awt.Color(255, 255, 255));
+        btnBrowseBooks.setForeground(new java.awt.Color(98, 109, 113));
+        btnBrowseBooks.setText("Browse Books");
+        btnBrowseBooks.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(205, 205, 192)));
+        navBtnGroup.add(btnBrowseBooks);
+        btnBrowseBooks.setContentAreaFilled(false);
+        btnBrowseBooks.setOpaque(true);
+        btnBrowseBooks.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButton3MouseEntered(evt);
+                btnBrowseBooksMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButton3MouseExited(evt);
+                btnBrowseBooksMouseExited(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jButton3MousePressed(evt);
+                btnBrowseBooksMousePressed(evt);
             }
         });
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnBrowseBooks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnBrowseBooksActionPerformed(evt);
             }
         });
-        navBtns.add(jButton3);
+        navBtns.add(btnBrowseBooks);
 
-        jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setForeground(new java.awt.Color(98, 109, 113));
-        jButton5.setText("My Orders");
-        jButton5.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(205, 205, 192)));
-        navBtnGroup.add(jButton5);
-        jButton5.setContentAreaFilled(false);
-        jButton5.setOpaque(true);
-        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnMyCart.setBackground(new java.awt.Color(255, 255, 255));
+        btnMyCart.setForeground(new java.awt.Color(98, 109, 113));
+        btnMyCart.setText("My Cart");
+        btnMyCart.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(205, 205, 192)));
+        navBtnGroup.add(btnMyCart);
+        btnMyCart.setContentAreaFilled(false);
+        btnMyCart.setOpaque(true);
+        btnMyCart.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButton5MouseEntered(evt);
+                btnMyCartMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButton5MouseExited(evt);
+                btnMyCartMouseExited(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jButton5MousePressed(evt);
+                btnMyCartMousePressed(evt);
             }
         });
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnMyCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnMyCartActionPerformed(evt);
             }
         });
-        navBtns.add(jButton5);
+        navBtns.add(btnMyCart);
+
+        btnMyOrders.setBackground(new java.awt.Color(255, 255, 255));
+        btnMyOrders.setForeground(new java.awt.Color(98, 109, 113));
+        btnMyOrders.setText("My Orders");
+        btnMyOrders.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(205, 205, 192)));
+        navBtnGroup.add(btnMyOrders);
+        btnMyOrders.setContentAreaFilled(false);
+        btnMyOrders.setOpaque(true);
+        btnMyOrders.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnMyOrdersMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnMyOrdersMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnMyOrdersMousePressed(evt);
+            }
+        });
+        btnMyOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMyOrdersActionPerformed(evt);
+            }
+        });
+        navBtns.add(btnMyOrders);
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setForeground(new java.awt.Color(98, 109, 113));
@@ -342,7 +377,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57)
                 .addComponent(navBtns, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         mainPanel.add(navMenu, java.awt.BorderLayout.LINE_START);
@@ -364,7 +399,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(1199, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,7 +409,90 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jXSearchField1.setDropMode(javax.swing.DropMode.INSERT);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        slide1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/anvil-cookbooks_hp.jpg"))); // NOI18N
+
+        jLabel2.setText("RECOMMENDED PRODUCTS");
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(98, 109, 113)));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/ss.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jLabel3)
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 26, Short.MAX_VALUE)
+                .addComponent(jLabel3))
+        );
+
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+
+        jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(530, 530, 530))
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(slide1)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(36, Short.MAX_VALUE))
+            .addComponent(jSeparator2)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(slide1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jScrollPane1.setViewportView(jPanel3);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1334, Short.MAX_VALUE)
+            .addComponent(jXSearchField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(jXSearchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -399,11 +517,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1276, Short.MAX_VALUE)
+            .addGap(0, 1334, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 667, Short.MAX_VALUE)
+            .addGap(0, 717, Short.MAX_VALUE)
         );
 
         webViewCards.add(jPanel6, "card2");
@@ -414,7 +532,7 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1500, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1558, Short.MAX_VALUE)
             .addComponent(titleBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -422,7 +540,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -472,21 +590,28 @@ public class MainFrame extends javax.swing.JFrame {
             loopBtns(navBtnGroup);
     }//GEN-LAST:event_btnHomeMouseClicked
 
-    private void jButton5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5MouseEntered
+    private void btnMyOrdersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyOrdersMouseEntered
+        if(!btnMyOrders.isSelected()) {
+            btnMyOrders.setBackground(hoverColor);
+            btnMyOrders.setForeground(Color.WHITE);
+        }
+    }//GEN-LAST:event_btnMyOrdersMouseEntered
 
-    private void jButton5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5MouseExited
+    private void btnMyOrdersMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyOrdersMouseExited
+         if(!btnMyOrders.isSelected()) {
+            btnMyOrders.setBackground(Color.WHITE);
+            btnMyOrders.setForeground(textColor);
+        }
+    }//GEN-LAST:event_btnMyOrdersMouseExited
 
-    private void jButton5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5MousePressed
+    private void btnMyOrdersMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyOrdersMousePressed
+         if(!btnHome.isSelected())
+            loopBtns(navBtnGroup);
+    }//GEN-LAST:event_btnMyOrdersMousePressed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnMyOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyOrdersActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnMyOrdersActionPerformed
 
     private void jButton6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseEntered
         // TODO add your handling code here:
@@ -520,28 +645,28 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnMyCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyCartActionPerformed
         cardLayout.show(webViewCards, "card2");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnMyCartActionPerformed
 
-    private void jButton3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MousePressed
-        if(!jButton3.isSelected())
-        loopBtns(navBtnGroup);
-    }//GEN-LAST:event_jButton3MousePressed
+    private void btnMyCartMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyCartMousePressed
+        if(!btnMyCart.isSelected())
+            loopBtns(navBtnGroup);
+    }//GEN-LAST:event_btnMyCartMousePressed
 
-    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
-        if(!jButton3.isSelected()) {
-            jButton3.setBackground(Color.WHITE);
-            jButton3.setForeground(textColor);
+    private void btnMyCartMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyCartMouseExited
+        if(!btnMyCart.isSelected()) {
+            btnMyCart.setBackground(Color.WHITE);
+            btnMyCart.setForeground(textColor);
         }
-    }//GEN-LAST:event_jButton3MouseExited
+    }//GEN-LAST:event_btnMyCartMouseExited
 
-    private void jButton3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseEntered
-        if(!jButton3.isSelected()) {
-            jButton3.setBackground(hoverColor);
-            jButton3.setForeground(Color.WHITE);
+    private void btnMyCartMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyCartMouseEntered
+        if(!btnMyCart.isSelected()) {
+            btnMyCart.setBackground(hoverColor);
+            btnMyCart.setForeground(Color.WHITE);
         }
-    }//GEN-LAST:event_jButton3MouseEntered
+    }//GEN-LAST:event_btnMyCartMouseEntered
 
     private void btnMinimizeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMinimizeMouseEntered
         btnMinimize.setIcon(cd.getImageMinHover());
@@ -554,6 +679,28 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeActionPerformed
         setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_btnMinimizeActionPerformed
+
+    private void btnBrowseBooksMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBrowseBooksMouseEntered
+        if(!btnBrowseBooks.isSelected()) {
+            btnBrowseBooks.setBackground(hoverColor);
+            btnBrowseBooks.setForeground(Color.WHITE);
+        }
+    }//GEN-LAST:event_btnBrowseBooksMouseEntered
+
+    private void btnBrowseBooksMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBrowseBooksMouseExited
+        if(!btnBrowseBooks.isSelected()) {
+            btnBrowseBooks.setBackground(Color.WHITE);
+            btnBrowseBooks.setForeground(textColor);
+        }
+    }//GEN-LAST:event_btnBrowseBooksMouseExited
+
+    private void btnBrowseBooksMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBrowseBooksMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBrowseBooksMousePressed
+
+    private void btnBrowseBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseBooksActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBrowseBooksActionPerformed
 
     /**
      * @param args the command line arguments
@@ -591,23 +738,33 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBrowseBooks;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnMinimize;
+    private javax.swing.JButton btnMyCart;
+    private javax.swing.JButton btnMyOrders;
     private javax.swing.JLabel imgLogo;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private org.jdesktop.swingx.JXSearchField jXSearchField1;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel navBtns;
     private javax.swing.JPanel navMenu;
+    private javax.swing.JLabel slide1;
     private javax.swing.JPanel titleBar;
     private javax.swing.JPanel webViewCards;
     // End of variables declaration//GEN-END:variables
