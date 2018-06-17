@@ -612,6 +612,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(slidePanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(slide1)
+                .addGap(0, 0, 0)
                 .addComponent(slide2)
                 .addGap(0, 0, 0)
                 .addComponent(slide3)
@@ -622,14 +623,12 @@ public class MainFrame extends javax.swing.JFrame {
         slidePanelLayout.setVerticalGroup(
             slidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(slidePanelLayout.createSequentialGroup()
-                .addComponent(slide1)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(slidePanelLayout.createSequentialGroup()
                 .addGroup(slidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(slide1)
                     .addComponent(slide2)
                     .addComponent(slide3)
                     .addComponent(slide4))
-                .addGap(0, 0, 0))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         slide1.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -651,14 +650,14 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addComponent(slidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1240, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainHomeContentPanelLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
+                        .addGap(25, 25, 25)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(56, Short.MAX_VALUE))
         );
         mainHomeContentPanelLayout.setVerticalGroup(
             mainHomeContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainHomeContentPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(10, 10, 10)
                 .addComponent(slidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -666,32 +665,26 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(lblRecommendedProducts)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout mainHomePagePanelLayout = new javax.swing.GroupLayout(mainHomePagePanel);
         mainHomePagePanel.setLayout(mainHomePagePanelLayout);
         mainHomePagePanelLayout.setHorizontalGroup(
             mainHomePagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 1326, Short.MAX_VALUE)
-            .addGroup(mainHomePagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(mainHomePagePanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(mainHomeContentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 1329, Short.MAX_VALUE)
+            .addGroup(mainHomePagePanelLayout.createSequentialGroup()
+                .addComponent(mainHomeContentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         mainHomePagePanelLayout.setVerticalGroup(
             mainHomePagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainHomePagePanelLayout.createSequentialGroup()
-                .addGap(1, 1, 1)
                 .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(628, Short.MAX_VALUE))
-            .addGroup(mainHomePagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(mainHomePagePanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(mainHomeContentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(0, 0, 0)
+                .addComponent(mainHomeContentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
