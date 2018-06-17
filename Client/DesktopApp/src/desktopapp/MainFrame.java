@@ -1,13 +1,41 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this li    @Override
+    public int getWidth(ImageObserver observer) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getHeight(ImageObserver observer) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ImageProducer getSource() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Graphics getGraphics() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getProperty(String name, ImageObserver observer) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+cense header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package desktopapp;
 
+import AppPackage.AnimationClass;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.util.Enumeration;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -15,6 +43,8 @@ import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
@@ -29,7 +59,11 @@ public class MainFrame extends javax.swing.JFrame {
     Color selectedColor;
     Color textColor;
     ButtonGroup navBtnGroup;
+    
+    AnimationClass AC = new AnimationClass();
+    
     int px,py;
+    int slideCount = 0;
     
     /**
      * Creates new form MainFrame
@@ -37,8 +71,6 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         navBtnGroup = new ButtonGroup();
         initComponents();
-        
-        //setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         cd = new CommonDesign(this);
         
@@ -66,6 +98,9 @@ public class MainFrame extends javax.swing.JFrame {
             webView.getEngine().load(file.toURI().toString());//("http://10.1.11.21:8080/hello1b_Aguas/");
             webPanel.setScene( new Scene( webView ) );
         });*/
+        
+        System.out.println(slide4.getX() + "\n" + slide4.getY());
+        runSlideShow();
     }
 
     public void loopBtns(ButtonGroup btnGroup) {
@@ -83,6 +118,70 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
     }
+    
+    public void runSlideShow() {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while(true){
+                        switch(slideCount) {
+                            case 0:
+                                Thread.sleep(5000);
+                                
+                                AC.jLabelXLeft(0, -1240, 15, 8, slide1);
+                                AC.jLabelXLeft(1240, 0, 15, 8, slide2);
+                                AC.jLabelXLeft(2480, 1240, 15, 8, slide3);
+                                
+                                slideCount = 1;
+                                break;
+                            case 1:
+                                Thread.sleep(5000);
+                                
+                                AC.jLabelXLeft(0, -1240, 15, 8, slide2);
+                                AC.jLabelXLeft(1240, 0, 15, 8, slide3);
+                                AC.jLabelXLeft(3720, 1240, 15, 8, slide4);
+                                
+                                slideCount = 2;
+                                break;
+                            case 2:
+                                Thread.sleep(5000);
+                                
+                                AC.jLabelXLeft(0, -1240, 15, 8, slide3);
+                                AC.jLabelXLeft(1240, 0, 15, 8, slide4);
+                                
+                                slideCount = 0;
+                                break;
+                                /*
+                            case 3:
+                                Thread.sleep(5000);
+                                
+                                AC.jLabelXLeft(0, -1240, 15, 8, slide4);
+                                AC.jLabelXLeft(1240, 0, 15, 8, slide5);
+                                
+                                slideCount = 4;
+                                break;
+                            case 5:
+                                Thread.sleep(5000);
+                                
+                                AC.jLabelXLeft(0, -1240, 15, 8, slide5);
+                                AC.jLabelXLeft(1240, 0, 15, 8, slide1);
+                                
+                                slideCount = 0;
+                                break;*/
+                        }
+                    }
+                } catch (Exception e) {
+                }
+            }
+        }.start();
+    }
+    
+    public ImageIcon setHomeImageThumbnails(String path) {
+        ImageIcon icon = new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage().getScaledInstance(115, 140, Image.SCALE_SMOOTH)); // "/desktopapp/img/ss.jpg"      
+        
+        return icon;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,6 +191,11 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLayeredPane1 = new javax.swing.JLayeredPane();
+        slide5 = new javax.swing.JLabel();
+        slide6 = new javax.swing.JLabel();
+        slide7 = new javax.swing.JLabel();
+        slide8 = new javax.swing.JLabel();
         titleBar = new javax.swing.JPanel();
         btnClose = new javax.swing.JButton();
         btnMinimize = new javax.swing.JButton();
@@ -107,22 +211,69 @@ public class MainFrame extends javax.swing.JFrame {
         imgLogo = new javax.swing.JLabel();
         lblWelcome = new javax.swing.JLabel();
         webViewCards = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jXSearchField1 = new org.jdesktop.swingx.JXSearchField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel3 = new javax.swing.JPanel();
-        slide1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        homePanel = new javax.swing.JPanel();
+        homePageTitle = new javax.swing.JPanel();
+        lblHomePage = new javax.swing.JLabel();
+        mainHomePagePanel = new javax.swing.JPanel();
+        searchField = new org.jdesktop.swingx.JXSearchField();
+        mainHomeContentPanel = new javax.swing.JPanel();
+        lblRecommendedProducts = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        imgBestSeller1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
-        jPanel6 = new javax.swing.JPanel();
+        slidePanel = new javax.swing.JPanel();
+        slide1 = new javax.swing.JLabel();
+        slide2 = new javax.swing.JLabel();
+        slide3 = new javax.swing.JLabel();
+        slide4 = new javax.swing.JLabel();
+
+        slide5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/banners/banner1.jpg"))); // NOI18N
+
+        slide6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/banners/banner2.jpg"))); // NOI18N
+
+        slide7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/banners/banner3.jpg"))); // NOI18N
+
+        slide8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/banners/banner5.jpg"))); // NOI18N
+
+        jLayeredPane1.setLayer(slide5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(slide6, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(slide7, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(slide8, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
+        jLayeredPane1.setLayout(jLayeredPane1Layout);
+        jLayeredPane1Layout.setHorizontalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(slide5)
+                .addComponent(slide6)
+                .addGap(0, 0, 0)
+                .addComponent(slide7)
+                .addGap(0, 0, 0)
+                .addComponent(slide8)
+                .addGap(21, 21, 21))
+        );
+        jLayeredPane1Layout.setVerticalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addComponent(slide5)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(slide6)
+                    .addComponent(slide7)
+                    .addComponent(slide8))
+                .addGap(0, 0, 0))
+        );
+
+        slide1.setLayout(new FlowLayout(FlowLayout.CENTER));
+        slide1.add(new JButton("hello"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setFocusable(false);
+        setIconImage(new ImageIcon("src/desktopapp/img/Book-o Shack Circle Logo@0,05x.png").getImage());
         setUndecorated(true);
         setResizable(false);
 
@@ -385,146 +536,180 @@ public class MainFrame extends javax.swing.JFrame {
         webViewCards.setBackground(new java.awt.Color(255, 255, 255));
         webViewCards.setLayout(new java.awt.CardLayout());
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        homePanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(205, 205, 192));
+        homePageTitle.setBackground(new java.awt.Color(98, 109, 113));
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Home Page");
+        lblHomePage.setForeground(new java.awt.Color(255, 255, 255));
+        lblHomePage.setText("Home Page");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout homePageTitleLayout = new javax.swing.GroupLayout(homePageTitle);
+        homePageTitle.setLayout(homePageTitleLayout);
+        homePageTitleLayout.setHorizontalGroup(
+            homePageTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePageTitleLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(lblHomePage)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        homePageTitleLayout.setVerticalGroup(
+            homePageTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePageTitleLayout.createSequentialGroup()
                 .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(lblHomePage)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        mainHomePagePanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jXSearchField1.setDropMode(javax.swing.DropMode.INSERT);
+        searchField.setDropMode(javax.swing.DropMode.INSERT);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        mainHomeContentPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        slide1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/anvil-cookbooks_hp.jpg"))); // NOI18N
+        lblRecommendedProducts.setForeground(new java.awt.Color(98, 109, 113));
+        lblRecommendedProducts.setText("RECOMMENDED PRODUCTS");
 
-        jLabel2.setText("RECOMMENDED PRODUCTS");
-
+        jPanel5.setBackground(new java.awt.Color(98, 109, 113));
         jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(98, 109, 113)));
+        jPanel5.setForeground(new java.awt.Color(98, 109, 113));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/ss.jpg"))); // NOI18N
+        imgBestSeller1.setIcon(setHomeImageThumbnails("/desktopapp/img/ss.jpg")
+        );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel3)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(imgBestSeller1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(316, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGap(0, 26, Short.MAX_VALUE)
-                .addComponent(jLabel3))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imgBestSeller1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(530, 530, 530))
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(slide1)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
-            .addComponent(jSeparator2)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+        slide1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/banners/banner1.jpg"))); // NOI18N
+
+        slide2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/banners/banner2.jpg"))); // NOI18N
+
+        slide3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/banners/banner3.jpg"))); // NOI18N
+
+        slide4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/banners/banner5.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout slidePanelLayout = new javax.swing.GroupLayout(slidePanel);
+        slidePanel.setLayout(slidePanelLayout);
+        slidePanelLayout.setHorizontalGroup(
+            slidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(slidePanelLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
                 .addComponent(slide1)
+                .addComponent(slide2)
+                .addGap(0, 0, 0)
+                .addComponent(slide3)
+                .addGap(0, 0, 0)
+                .addComponent(slide4)
+                .addGap(21, 21, 21))
+        );
+        slidePanelLayout.setVerticalGroup(
+            slidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(slidePanelLayout.createSequentialGroup()
+                .addComponent(slide1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(slidePanelLayout.createSequentialGroup()
+                .addGroup(slidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(slide2)
+                    .addComponent(slide3)
+                    .addComponent(slide4))
+                .addGap(0, 0, 0))
+        );
+
+        slide1.setLayout(new FlowLayout(FlowLayout.CENTER));
+        slide1.add(new JButton("hello"));
+
+        javax.swing.GroupLayout mainHomeContentPanelLayout = new javax.swing.GroupLayout(mainHomeContentPanel);
+        mainHomeContentPanel.setLayout(mainHomeContentPanelLayout);
+        mainHomeContentPanelLayout.setHorizontalGroup(
+            mainHomeContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator2)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainHomeContentPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblRecommendedProducts)
+                .addGap(545, 545, 545))
+            .addGroup(mainHomeContentPanelLayout.createSequentialGroup()
+                .addGroup(mainHomeContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainHomeContentPanelLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(slidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainHomeContentPanelLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(56, Short.MAX_VALUE))
+        );
+        mainHomeContentPanelLayout.setVerticalGroup(
+            mainHomeContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainHomeContentPanelLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(slidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(jLabel2)
+                .addComponent(lblRecommendedProducts)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jScrollPane1.setViewportView(jPanel3);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1334, Short.MAX_VALUE)
-            .addComponent(jXSearchField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout mainHomePagePanelLayout = new javax.swing.GroupLayout(mainHomePagePanel);
+        mainHomePagePanel.setLayout(mainHomePagePanelLayout);
+        mainHomePagePanelLayout.setHorizontalGroup(
+            mainHomePagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 1326, Short.MAX_VALUE)
+            .addGroup(mainHomePagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainHomePagePanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(mainHomeContentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        mainHomePagePanelLayout.setVerticalGroup(
+            mainHomePagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainHomePagePanelLayout.createSequentialGroup()
                 .addGap(1, 1, 1)
-                .addComponent(jXSearchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(628, Short.MAX_VALUE))
+            .addGroup(mainHomePagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainHomePagePanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(mainHomeContentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
+        homePanel.setLayout(homePanelLayout);
+        homePanelLayout.setHorizontalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(homePageTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainHomePagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        homePanelLayout.setVerticalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addComponent(homePageTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
+                .addComponent(mainHomePagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        webViewCards.add(jPanel4, "card1");
-
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1334, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 717, Short.MAX_VALUE)
-        );
-
-        webViewCards.add(jPanel6, "card2");
+        webViewCards.add(homePanel, "card1");
 
         mainPanel.add(webViewCards, java.awt.BorderLayout.CENTER);
 
@@ -532,7 +717,7 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1558, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1550, Short.MAX_VALUE)
             .addComponent(titleBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -744,27 +929,34 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnMinimize;
     private javax.swing.JButton btnMyCart;
     private javax.swing.JButton btnMyOrders;
+    private javax.swing.JPanel homePageTitle;
+    private javax.swing.JPanel homePanel;
+    private javax.swing.JLabel imgBestSeller1;
     private javax.swing.JLabel imgLogo;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private org.jdesktop.swingx.JXSearchField jXSearchField1;
+    private javax.swing.JLabel lblHomePage;
+    private javax.swing.JLabel lblRecommendedProducts;
     private javax.swing.JLabel lblWelcome;
+    private javax.swing.JPanel mainHomeContentPanel;
+    private javax.swing.JPanel mainHomePagePanel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel navBtns;
     private javax.swing.JPanel navMenu;
+    private org.jdesktop.swingx.JXSearchField searchField;
     private javax.swing.JLabel slide1;
+    private javax.swing.JLabel slide2;
+    private javax.swing.JLabel slide3;
+    private javax.swing.JLabel slide4;
+    private javax.swing.JLabel slide5;
+    private javax.swing.JLabel slide6;
+    private javax.swing.JLabel slide7;
+    private javax.swing.JLabel slide8;
+    private javax.swing.JPanel slidePanel;
     private javax.swing.JPanel titleBar;
     private javax.swing.JPanel webViewCards;
     // End of variables declaration//GEN-END:variables

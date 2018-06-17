@@ -22,6 +22,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXHyperlink;
 
@@ -185,6 +186,11 @@ public class LoginFrame extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnLoginMouseExited(evt);
+            }
+        });
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
             }
         });
 
@@ -363,6 +369,15 @@ public class LoginFrame extends javax.swing.JFrame {
     private void btnLoginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseExited
         btnLogin.setBackground(coffee);
     }//GEN-LAST:event_btnLoginMouseExited
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        if(login(txtUsername.getText(), String.valueOf(txtpPassword.getPassword()))) {
+            this.dispose();
+            new MainFrame().setVisible(true);
+        }
+        else 
+            JOptionPane.showMessageDialog(null, "Username and/or password does not match");
+    }//GEN-LAST:event_btnLoginActionPerformed
     
     /**
      * @param args the command line arguments
@@ -412,4 +427,10 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     private javax.swing.JPasswordField txtpPassword;
     // End of variables declaration//GEN-END:variables
+
+    private static boolean login(java.lang.String username, java.lang.String pass) {
+        client.CustomerWS_Service service = new client.CustomerWS_Service();
+        client.CustomerWS port = service.getCustomerWSPort();
+        return port.login(username, pass);
+    }
 }
