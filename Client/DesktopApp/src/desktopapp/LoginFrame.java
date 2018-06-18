@@ -6,19 +6,9 @@
 package desktopapp;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Desktop;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -58,16 +48,7 @@ public class LoginFrame extends javax.swing.JFrame {
         lblLogin.requestFocus();
     }
     
-    // Redirect user to sign up page in browser
-    public static void openSignUp(URI uri) {
-        if (Desktop.isDesktopSupported()) {
-            try {
-                Desktop.getDesktop().browse(uri);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -347,7 +328,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jXHyperlink6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXHyperlink6ActionPerformed
         File file = new File("src/desktopapp/webApp/Home.html");
-        openSignUp(file.toURI());
+        cd.openSignUp(file.toURI());
     }//GEN-LAST:event_jXHyperlink6ActionPerformed
 
     private void btnMinimizeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMinimizeMouseEntered

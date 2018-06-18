@@ -8,12 +8,14 @@ package desktopapp;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -70,6 +72,17 @@ public class CommonDesign {
         if (component instanceof Container ){
             for (Component child : ((Container)component).getComponents()) {
                 changeAllFont(child,font);
+            }
+        }
+    }
+    
+     // Redirect user to sign up page in browser
+    public static void openSignUp(URI uri) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(uri);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
