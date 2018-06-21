@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.xml.ws.BindingProvider;
 import org.jdesktop.swingx.JXHyperlink;
 
 /**
@@ -354,7 +355,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         if(login(txtUsername.getText(), String.valueOf(txtpPassword.getPassword()))) {
             this.dispose();
-            new MainFrame().setVisible(true);
+            new MainFrame(txtUsername.getText()).setVisible(true);
         }
         else 
             JOptionPane.showMessageDialog(null, "Username and/or password does not match");

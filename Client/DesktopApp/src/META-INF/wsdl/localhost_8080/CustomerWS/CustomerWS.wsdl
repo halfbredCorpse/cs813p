@@ -4,6 +4,12 @@
 <xsd:import namespace="http://client/" schemaLocation="http://localhost:8080/CustomerWS/CustomerWS?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="getAccountDetails">
+<part name="parameters" element="tns:getAccountDetails"/>
+</message>
+<message name="getAccountDetailsResponse">
+<part name="parameters" element="tns:getAccountDetailsResponse"/>
+</message>
 <message name="login">
 <part name="parameters" element="tns:login"/>
 </message>
@@ -11,6 +17,10 @@
 <part name="parameters" element="tns:loginResponse"/>
 </message>
 <portType name="CustomerWS">
+<operation name="getAccountDetails">
+<input wsam:Action="http://client/CustomerWS/getAccountDetailsRequest" message="tns:getAccountDetails"/>
+<output wsam:Action="http://client/CustomerWS/getAccountDetailsResponse" message="tns:getAccountDetailsResponse"/>
+</operation>
 <operation name="login">
 <input wsam:Action="http://client/CustomerWS/loginRequest" message="tns:login"/>
 <output wsam:Action="http://client/CustomerWS/loginResponse" message="tns:loginResponse"/>
@@ -18,6 +28,15 @@
 </portType>
 <binding name="CustomerWSPortBinding" type="tns:CustomerWS">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="getAccountDetails">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="login">
 <soap:operation soapAction=""/>
 <input>

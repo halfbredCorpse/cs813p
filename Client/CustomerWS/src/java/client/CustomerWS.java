@@ -9,6 +9,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -19,7 +23,6 @@ import javax.jws.WebParam;
  */
 @WebService(serviceName = "CustomerWS")
 public class CustomerWS {
-
     /**
      * Web service operation
      */
@@ -43,4 +46,58 @@ public class CustomerWS {
         
         return false;
     }
+
+    /**
+     * Web service operation
+     * @param username
+     */
+    @WebMethod(operationName = "getAccountDetails")
+    public List<Object> getAccountDetails(@WebParam(name = "username") String username) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://10.1.14.218:3306/central", "java3", "1234");
+            
+            PreparedStatement pstmt = con.prepareStatement("select * from accounts where username=?"    );
+            pstmt.setString(1, username);
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            if(rs.next()) {
+                
+                List<Object> user = new ArrayList<>();
+                user.add(rs.getString(1));
+                user.add(rs.getString(2));
+                user.add(rs.getString(3));
+                user.add(rs.getString(4));
+                user.add(rs.getString(5));
+                user.add(rs.getString(6));
+                user.add(rs.getString(7));
+                user.add(rs.getString(8));
+                user.add(rs.getInt(9));
+                user.add(rs.getInt(10));
+                user.add(rs.getString(11));
+                user.add(rs.getString(12));
+                /*
+                Map<String, Object> user = new HashMap<>();
+                user.put("userID", rs.getString(1));
+                user.put("username", rs.getString(2));
+                user.put("email", rs.getString(3));
+                user.put("pass", rs.getString(4));
+                user.put("firstName", rs.getString(5));
+                user.put("lastName", rs.getString(6));
+                user.put("add1", rs.getString(7));
+                user.put("add2", rs.getString(8));
+                user.put("longitude", rs.getInt(9));
+                user.put("latitude", rs.getString(10));
+                user.put("creditCard", rs.getString(11));
+                user.put("cvv", rs.getString(12));*/
+                
+                return user;
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    
 }

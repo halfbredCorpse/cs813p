@@ -37,6 +37,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -65,19 +66,27 @@ public class MainFrame extends javax.swing.JFrame {
     int px,py;
     int slideCount = 0;
     
+    private final String username;
+    List<Object> user;
+    
     /**
      * Creates new form MainFrame
+     * @param username
      */
-    public MainFrame() {
-        navBtnGroup = new ButtonGroup();
-        initComponents();
+    public MainFrame(String username) {
+        this.username = username;
+        user = getAccountDetails(username);
         
+        navBtnGroup = new ButtonGroup();
         cd = new CommonDesign(this);
+        initComponents();
         
         cardLayout = (CardLayout) contentCards.getLayout();
         
         cd.changeAllFont(mainPanel, cd.createFont("fonts/CircularStd-Bold.otf", 14));
+        
         lblWelcome.setFont(lblWelcome.getFont().deriveFont(18F));
+        lblName.setFont(lblName.getFont().deriveFont(18F));
         
         selectedColor = new Color(221, 188, 149);
         hoverColor = new Color(205,205,192);
@@ -98,8 +107,6 @@ public class MainFrame extends javax.swing.JFrame {
             webView.getEngine().load(file.toURI().toString());//("http://10.1.11.21:8080/hello1b_Aguas/");
             webPanel.setScene( new Scene( webView ) );
         });*/
-        
-        System.out.println(slide5.getX());
         runSlideShow();
     }
 
@@ -225,6 +232,9 @@ public class MainFrame extends javax.swing.JFrame {
         btnMinimize = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         navMenu = new javax.swing.JPanel();
+        welcomePanel = new javax.swing.JPanel();
+        lblWelcome = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
         navBtns = new javax.swing.JPanel();
         btnHome = new javax.swing.JButton();
         btnCategories = new javax.swing.JButton();
@@ -233,11 +243,10 @@ public class MainFrame extends javax.swing.JFrame {
         btnMyAccount = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         imgLogo = new javax.swing.JLabel();
-        lblWelcome = new javax.swing.JLabel();
         jXHyperlink6 = new org.jdesktop.swingx.JXHyperlink();
         jXHyperlink7 = new org.jdesktop.swingx.JXHyperlink();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblCopyright1 = new javax.swing.JLabel();
+        lblCopyright2 = new javax.swing.JLabel();
         contentCards = new javax.swing.JPanel();
         homePanel = new javax.swing.JPanel();
         homePageTitle = new javax.swing.JPanel();
@@ -422,6 +431,17 @@ public class MainFrame extends javax.swing.JFrame {
         navMenu.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(205, 205, 192), null));
         navMenu.setPreferredSize(new java.awt.Dimension(220, 717));
 
+        welcomePanel.setBackground(new java.awt.Color(255, 255, 255));
+        welcomePanel.setLayout(new java.awt.GridLayout(2, 0));
+
+        lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblWelcome.setText("Welcome");
+        welcomePanel.add(lblWelcome);
+
+        lblName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblName.setText(user.get(4).toString());
+        welcomePanel.add(lblName);
+
         navBtns.setBackground(new java.awt.Color(255, 255, 255));
         navBtns.setLayout(new java.awt.GridLayout(6, 0));
 
@@ -578,8 +598,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         imgLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desktopapp/img/Book-o Shack Circle Logo@0,05x.png"))); // NOI18N
 
-        lblWelcome.setText("Welcome user!");
-
         jXHyperlink6.setForeground(new java.awt.Color(179, 136, 103));
         jXHyperlink6.setText("About Us");
         jXHyperlink6.addActionListener(new java.awt.event.ActionListener() {
@@ -596,11 +614,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setForeground(new java.awt.Color(98, 109, 113));
-        jLabel1.setText("© 2018 Book-Shack");
+        lblCopyright1.setForeground(new java.awt.Color(98, 109, 113));
+        lblCopyright1.setText("© 2018 Book-Shack");
 
-        jLabel2.setForeground(new java.awt.Color(98, 109, 113));
-        jLabel2.setText("All rights reserved.");
+        lblCopyright2.setForeground(new java.awt.Color(98, 109, 113));
+        lblCopyright2.setText("All rights reserved.");
 
         javax.swing.GroupLayout navMenuLayout = new javax.swing.GroupLayout(navMenu);
         navMenu.setLayout(navMenuLayout);
@@ -609,42 +627,39 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(navBtns, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(navMenuLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(navMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navMenuLayout.createSequentialGroup()
-                        .addGap(0, 35, Short.MAX_VALUE)
-                        .addGroup(navMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblWelcome)
-                            .addComponent(imgLogo))
-                        .addGap(45, 45, 45))
-                    .addGroup(navMenuLayout.createSequentialGroup()
-                        .addComponent(jXHyperlink7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jXHyperlink6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                .addComponent(jXHyperlink7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jXHyperlink6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(navMenuLayout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(navMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
+                    .addComponent(lblCopyright2)
+                    .addComponent(lblCopyright1))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(welcomePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(navMenuLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(imgLogo)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         navMenuLayout.setVerticalGroup(
             navMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navMenuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(imgLogo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(welcomePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(navBtns, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(navMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jXHyperlink6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jXHyperlink7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblCopyright1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addComponent(lblCopyright2)
                 .addGap(7, 7, 7))
         );
 
@@ -1020,7 +1035,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMyOrdersMouseEntered
 
     private void btnMyOrdersMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyOrdersMouseExited
-         if(!btnMyOrders.isSelected()) {
+        if(!btnMyOrders.isSelected()) {
             btnMyOrders.setBackground(Color.WHITE);
             btnMyOrders.setForeground(textColor);
         }
@@ -1036,11 +1051,17 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMyOrdersActionPerformed
 
     private void btnMyAccountMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyAccountMouseEntered
-        // TODO add your handling code here:
+        if(!btnMyAccount.isSelected()) {
+            btnMyAccount.setBackground(hoverColor);
+            btnMyAccount.setForeground(Color.WHITE);
+        }
     }//GEN-LAST:event_btnMyAccountMouseEntered
 
     private void btnMyAccountMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyAccountMouseExited
-        // TODO add your handling code here:
+        if(!btnMyAccount.isSelected()) {
+            btnMyAccount.setBackground(Color.WHITE);
+            btnMyAccount.setForeground(textColor);
+        }
     }//GEN-LAST:event_btnMyAccountMouseExited
 
     private void btnMyAccountMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyAccountMousePressed
@@ -1136,7 +1157,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jXHyperlink7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXHyperlink7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jXHyperlink7ActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -1164,12 +1185,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form *//*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainFrame().setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1189,17 +1210,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel homePageTitle;
     private javax.swing.JPanel homePanel;
     private javax.swing.JLabel imgBestSeller1;
-    private javax.swing.JLabel imgBestSeller2;
-    private javax.swing.JLabel imgBestSeller3;
     private javax.swing.JLabel imgBestSeller4;
     private javax.swing.JLabel imgBestSeller5;
     private javax.swing.JLabel imgLogo;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JSeparator jSeparator1;
@@ -1210,7 +1225,10 @@ public class MainFrame extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXPanel jXPanel2;
     private org.jdesktop.swingx.JXPanel jXPanel3;
     private org.jdesktop.swingx.JXPanel jXPanel4;
+    private javax.swing.JLabel lblCopyright1;
+    private javax.swing.JLabel lblCopyright2;
     private javax.swing.JLabel lblHomePage;
+    private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblNewArrivals;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel mainHomeContentPanel;
@@ -1227,5 +1245,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel slide5;
     private javax.swing.JPanel slidePanel;
     private javax.swing.JPanel titleBar;
+    private javax.swing.JPanel welcomePanel;
     // End of variables declaration//GEN-END:variables
+
+    private static java.util.List<java.lang.Object> getAccountDetails(java.lang.String username) {
+        client.CustomerWS_Service service = new client.CustomerWS_Service();
+        client.CustomerWS port = service.getCustomerWSPort();
+        return port.getAccountDetails(username);
+    }
 }
