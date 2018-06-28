@@ -2,4 +2,6 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://localhost:8080/OrdersWS/OrdersWS?wsdl" uri="xml-resources/web-service-references/OrdersWS/wsdl/localhost_8080/OrdersWS/OrdersWS.wsdl"/>
     <system systemId="http://localhost:8080/OrdersWS/OrdersWS?xsd=1" uri="xml-resources/web-service-references/OrdersWS/wsdl/localhost_8080/OrdersWS/OrdersWS.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/BranchWS/BranchWS?wsdl" uri="xml-resources/web-service-references/BranchWS/wsdl/localhost_8080/BranchWS/BranchWS.wsdl"/>
+    <system systemId="http://localhost:8080/BranchWS/BranchWS?xsd=1" uri="xml-resources/web-service-references/BranchWS/wsdl/localhost_8080/BranchWS/BranchWS.xsd_1.xsd"/>
 </catalog>
