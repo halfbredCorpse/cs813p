@@ -98,6 +98,43 @@ public class CustomerWS {
         }
         return null;
     }
-    
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "loadBooks")
+    public ArrayList<Object> loadBooks(@WebParam(name = "genreId") int genreId, @WebParam(name = "sizeOfList") int sizeOfList, @WebParam(name = "index") int index) {
+        List<ArrayList<Object>> listOfBooks = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/central", "root", "");
+            
+            PreparedStatement pstmt = con.prepareStatement("select * from books where genre_id=? order by img_path limit ?");
+            pstmt.setInt(1, genreId);
+            pstmt.setInt(2, sizeOfList);
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            while(rs.next()) {
+                ArrayList<Object> book = new ArrayList<>();
+                book.add(rs.getString(1));
+                book.add(rs.getString(2));
+                book.add(rs.getDouble(3));
+                book.add(rs.getString(4));
+                book.add(rs.getString(5));
+                book.add(rs.getDate(6));
+                book.add(rs.getString(7));
+                book.add(rs.getString(8));
+                book.add(rs.getString(9));
+                book.add(rs.getString(10));
+                
+                listOfBooks.add(book);
+            }
+            
+            return listOfBooks.get(index);
+        } catch (Exception e) {
+        }
+        return null;
+    }
     
 }
