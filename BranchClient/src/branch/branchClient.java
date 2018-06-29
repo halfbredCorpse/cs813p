@@ -441,7 +441,7 @@ public class branchClient extends javax.swing.JFrame {
                 
                 userAddress = prepState.executeQuery(); // fetchUserAddres(userInfo.getString("address_id"))
                 
-                // Concatenate all user address information and place into Full Address text field
+                // Concatenate all user address information and place into "Full Address" text field
                 txt_fullAddress.setText(userAddress.getString("streed_add") + ", " + userAddress.getString("city") + ", " 
                         + userAddress.getString("province") + ", " + userAddress.getString("zip"));
                 
@@ -498,7 +498,7 @@ public class branchClient extends javax.swing.JFrame {
                 txt_empPin.setText("");
             }
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_btn_logInActionPerformed
@@ -595,6 +595,7 @@ public class branchClient extends javax.swing.JFrame {
 
     private void btn_logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logOutActionPerformed
         // "Logs out" employee
+        // Enables log in operations
         loggedIn = false;
         txt_empId.setText("");
         txt_empId.setEnabled(true);
@@ -603,15 +604,22 @@ public class branchClient extends javax.swing.JFrame {
         btn_logIn.setEnabled(true);    
         btn_logOut.setEnabled(false);
         
-        txt_searchOrder.setEnabled(true);
-        btn_search.setEnabled(true);
-        btn_firstOrder.setEnabled(true);
-        btn_previousOrder.setEnabled(true);
-        btn_nextOrder.setEnabled(true);
-        btn_lastOrder.setEnabled(true);
-        tbl_orderItems.setEnabled(true);
-        btn_updateOrder.setEnabled(true);
-        btn_completeOrder.setEnabled(true);
+         // Deletes all rows of the Order Items table to make way for different order
+        DefaultTableModel table = (DefaultTableModel) tbl_orderItems.getModel();
+        int rows = table.getRowCount();
+        for (int i = rows-1; i >= 0; i--)
+            table.removeRow(i);
+        
+        // Disables order management functions
+        txt_searchOrder.setEnabled(false);
+        btn_search.setEnabled(false);
+        btn_firstOrder.setEnabled(false);
+        btn_previousOrder.setEnabled(false);
+        btn_nextOrder.setEnabled(false);
+        btn_lastOrder.setEnabled(false);
+        tbl_orderItems.setEnabled(false);
+        btn_updateOrder.setEnabled(false);
+        btn_completeOrder.setEnabled(false);
     }//GEN-LAST:event_btn_logOutActionPerformed
 
     private void mnu_refreshOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_refreshOrdersActionPerformed
@@ -628,6 +636,86 @@ public class branchClient extends javax.swing.JFrame {
                 orders = prepState.executeQuery();      // Replace prepState w/ FetchOrders() function call
                 orders.first();
                 txt_orderID.setText(orders.getString("order_id"));
+                
+               // Deletes all rows of the Order Items table to make way for different order
+                DefaultTableModel table = (DefaultTableModel) tbl_orderItems.getModel();
+                int rows = table.getRowCount();
+                for (int i = rows-1; i >= 0; i--)
+                    table.removeRow(i);
+
+                // Searches for first order from "orders" table, "central" database
+                // Start of SearchOrder Web Service     ****        To be removed when implementing web service
+                Class.forName("com.mysql.jdbc.Driver");
+                connect = DriverManager.getConnection(CENTRAL_DB_URL, DB_USERNAME, DB_PASSWORD);
+                prepState = connect.prepareStatement(SEARCH_ORDER_QUERY);
+                prepState.setString(1, txt_orderID.getText());
+                // End of SearchOrder Web Service       ****
+
+                currentOrder = prepState.executeQuery(); // searchOrder(txt_orderID.getText())
+
+                // Fetch user information from "accounts" table, "central" database
+                // Start of FetchUserInfo Web Service
+                Class.forName("com.mysql.jdbc.Driver");
+                connect = DriverManager.getConnection(CENTRAL_DB_URL, DB_USERNAME, DB_PASSWORD);
+                prepState = connect.prepareStatement(FETCH_USER_INFO_QUERY);
+                prepState.setString(1, currentOrder.getString("username"));
+                // End of FetchUserInfo Web Service
+
+                userInfo = prepState.executeQuery();    // fetchUserInfo(currentOrder.getString("username"))
+                txt_fullName.setText(userInfo.getString("last_name") + ", " + userInfo.getString("first_name"));
+                txt_username.setText(userInfo.getString("username"));
+
+                // Fetch user address information from "address" table, "central" database
+                // Start of FetchUserAddress Web Service
+                Class.forName("com.mysql.jdbc.Driver");
+                connect = DriverManager.getConnection(CENTRAL_DB_URL, DB_USERNAME, DB_PASSWORD);
+                prepState = connect.prepareStatement(FETCH_USER_ADDRESS_QUERY);
+                prepState.setString(1, userInfo.getString("address_id"));
+                prepState.setString(2, userInfo.getString("username"));
+                // End of FetchUserAddress Web Service
+
+                userAddress = prepState.executeQuery(); // fetchUserAddres(userInfo.getString("address_id"))
+
+                // Concatenate all user address information and place into Full Address text field
+                txt_fullAddress.setText(userAddress.getString("streed_add") + ", " + userAddress.getString("city") + ", " 
+                        + userAddress.getString("province") + ", " + userAddress.getString("zip"));
+
+                // List down order details in Order Details table
+                // Start of FetchOrderDetails Web Service
+                Class.forName("com.mysql.jdbc.Driver");
+                connect = DriverManager.getConnection(CENTRAL_DB_URL, DB_USERNAME, DB_PASSWORD);
+                prepState = connect.prepareStatement(FETCH_ORDER_DETAILS_QUERY);
+                prepState.setString(1, currentOrder.getString("details_id"));
+                prepState.setString(2, currentOrder.getString("order_id"));
+                // End of FetchOrderDetails Web Service
+
+                orderDetails = prepState.executeQuery();    // fetchOrderDetails(userInfo.getString("details_id"))
+                orderDetails.first();
+
+                do {
+                    boolean processed;  // True if order item has been processed; Else, false
+
+                    // Fetch book details from "books" table, "central" database
+                    // Start of FetchBookDetails Web Service
+                    Class.forName("com.mysql.jdbc.Driver");
+                    connect = DriverManager.getConnection(CENTRAL_DB_URL, DB_USERNAME, DB_PASSWORD);
+                    prepState = connect.prepareStatement(FETCH_BOOK_DETAILS_QUERY);
+                    prepState.setString(1, orderDetails.getString("isbn"));
+                    // End of FetchBookDetails Web Service
+
+                    orderDetails = prepState.executeQuery(); // fetchBookDetails(orderDetails.getString("isbn"))
+
+                    // Sets Order Items checkbox as unchecked if processed == 0, else checked
+                    if (bookDetails.getInt("processed") == 0)
+                        processed = false;
+                    else
+                        processed = true;
+
+                    // Displays order item details as each row in Order Items table
+                    Object[] data = {orderDetails.getString("isbn"), bookDetails.getString("title"), orderDetails.getString("quantity"),
+                        orderDetails.getString("quantity"), processed};
+                    table.addRow(data);
+                } while (orderDetails.next()); 
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e);
             }
@@ -978,6 +1066,7 @@ public class branchClient extends javax.swing.JFrame {
             orderDetails.first();
             int goodChanges = 0;
             
+            // Go through order items and update each order detail whether processed or not
             do {
                 DefaultTableModel table = (DefaultTableModel) tbl_orderItems.getModel();
                 boolean processed = (boolean) table.getValueAt(orderDetails.getRow() - 1, 4);
@@ -994,11 +1083,13 @@ public class branchClient extends javax.swing.JFrame {
                 
                 prepState.setString(2, orderDetails.getString("details_id"));
                 prepState.setString(3, orderDetails.getString("order_id"));
-                if (prepState.executeUpdate() != 0)
-                    goodChanges++;
                 // End of UpdateOrder Web Service   ****
+                
+                if (prepState.executeUpdate() != 0)     // updateOrder(details_id, order_id, processed)
+                    goodChanges++;
             } while (orderDetails.next());
             
+            // Verify number of successful updates
             if (goodChanges == orderDetails.getRow())
                 JOptionPane.showMessageDialog(null, "All order items have been updated!");
             else if (goodChanges == 0)
@@ -1016,6 +1107,7 @@ public class branchClient extends javax.swing.JFrame {
             boolean allProcessed = true;
             DefaultTableModel table = (DefaultTableModel) tbl_orderItems.getModel();
             
+            // Verify if all order details have been processed
             for (int i = 0; i < table.getRowCount(); i++) {
                 boolean processed = (boolean) table.getValueAt(i, 4);
                 
@@ -1025,16 +1117,42 @@ public class branchClient extends javax.swing.JFrame {
                 }
             }
             
-            
-            if (allProcessed) { // Check if all of the order_items have checked Processed attribute
+            // If all order details have been processed, continue; Else, pop up error message
+            if (allProcessed) { 
+                orderDetails.first();
+
+                // Update all order details in database to avoid errors in processing
+                do {
+                    boolean processed = (boolean) table.getValueAt(orderDetails.getRow() - 1, 4);
+
+                    // Start of UpdateOrder Web Service     ****
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection connect = DriverManager.getConnection(CENTRAL_DB_URL, DB_USERNAME, DB_PASSWORD);
+                    PreparedStatement prepState = connect.prepareStatement(UPDATE_ORDER_QUERY);
+
+                    if (processed)
+                        prepState.setInt(1, 1);
+                    else
+                        prepState.setInt(1, 0);
+
+                    prepState.setString(2, orderDetails.getString("details_id"));
+                    prepState.setString(3, orderDetails.getString("order_id"));
+                    // End of UpdateOrder Web Service   ****
+
+                    prepState.executeUpdate();     // updateOrder(details_id, order_id, processed)
+                } while (orderDetails.next());
+                
                 //Start of CompleteOrder Web Service
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connect = DriverManager.getConnection(CENTRAL_DB_URL, DB_USERNAME, DB_PASSWORD);
                 PreparedStatement prepState = connect.prepareStatement(COMPLETE_ORDER_QUERY);
                 prepState.setString(1, txt_orderID.getText());
-                prepState.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Order has been completely processed! It is now ready to be shipped.");
                 //End of CompleteOrder Web Service
+                
+                if (prepState.executeUpdate() != 0)    //completeOrder(txt_orderID.getText())
+                    JOptionPane.showMessageDialog(null, "Order has been completely processed! It is now ready to be shipped.");
+                else
+                    JOptionPane.showMessageDialog(null, "There has been an error with completing the order in the database. Please try again later.");
             } else
                 JOptionPane.showMessageDialog(null, "Not all order items have been processed! Please make sure all items have been processed.");
         }
