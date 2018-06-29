@@ -27,48 +27,108 @@
 <link href="//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,900,900italic,700italic" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <%!
-        public void returnBooks() {
-        
-        }
-    %>
-    <%-- start web service invocation --%><hr/>
-    <%
-        List<List<Object>> childBooks = new ArrayList<List<Object>>();
-        List<List<Object>> classicBooks = new ArrayList<List<Object>>();
-        int genreId = 1;
-        int sizeOfList = 8;
-        try {
+    <%! 
+        public ArrayList<List<Object>> returnBooks(int genreId, int sizeOfList) {
+            ArrayList<List<Object>> books = new ArrayList<List<Object>>();
+            try {
             client.CustomerWS_Service service = new client.CustomerWS_Service();
             client.CustomerWS port = service.getCustomerWSPort();
              // TODO initialize WS operation arguments here
-            for(int index = 0; index < sizeOfList; index++) {
+            for(int i = 0; i< sizeOfList; i++) {
                 // TODO process result here
-                java.util.List<java.lang.Object> result = port.loadBooks(genreId, sizeOfList, index);
-                childBooks.add(result);
+                java.util.List<java.lang.Object> result = port.loadBooks(genreId, sizeOfList, i);
+                books.add(result);
             }
-            
-            genreId = 2;
-            sizeOfList = 8;
-            
-            for(int index = 0; index < sizeOfList; index++) {
-                // TODO process result here
-                java.util.List<java.lang.Object> result = port.loadBooks(genreId, sizeOfList, index);
-                classicBooks.add(result);
+            return books;
+            } catch (Exception ex) {
+                // TODO handle custom exceptions here
+                
             }
-            
-        } catch (Exception ex) {
-            // TODO handle custom exceptions here
-            out.println(ex);
+            return null;
         }
     %>
-    <%-- end web service invocation --%><hr/>
-<!-- header -->
+    <%
+        int sizeOfList = 8;
+        List<List<Object>> childBooks = returnBooks(1, sizeOfList);
+        List<List<Object>> classicBooks = returnBooks(2, sizeOfList);
+        List<List<Object>> cookBooks = returnBooks(3, sizeOfList);
+        List<List<Object>> graphBooks = returnBooks(4, sizeOfList);
+    %>
+        <%-- start web service invocation --%>
+    <%
+        if("POST".equalsIgnoreCase(request.getMethod())) {
+            if(request.getParameter("signup") != null) {
+                try {
+                    client.CustomerWS_Service service = new client.CustomerWS_Service();
+                    client.CustomerWS port = service.getCustomerWSPort();
+                     // TODO initialize WS operation arguments here
+                    java.lang.String username = request.getParameter("Username");
+                    java.lang.String email = request.getParameter("Email");
+                    java.lang.String pass = request.getParameter("password");
+                    java.lang.String firstName = request.getParameter("First Name");
+                    java.lang.String lastName = request.getParameter("Last Name");
+                    java.lang.String street = request.getParameter("Street");
+                    java.lang.String city = request.getParameter("City");
+                    java.lang.String province = request.getParameter("Province");
+                    java.lang.String zip = request.getParameter("Zip");
+                    java.lang.String longitude = request.getParameter("Longitude");
+                    java.lang.String latitude = request.getParameter("Latitude");
+                    java.lang.String creditCard = request.getParameter("Credit Card");
+                    java.lang.String cvv = request.getParameter("CV");
+                    // TODO process result here
+                    boolean result = port.signUp(username, email, pass, firstName, lastName, street, city, province, zip, longitude, latitude, creditCard, cvv);
+                    session.setAttribute("username", username);
+                } catch (Exception ex) {
+                    // TODO handle custom exceptions here
+                }
+            }
+        }
+    %>
+    <%-- end web service invocation --%>
+    <%-- start web service invocation --%>
+        <%
+            boolean result = false;
+            if("POST".equalsIgnoreCase(request.getMethod())) {
+                if(request.getParameter("signin") != null) {
+                    try {
+                        client.CustomerWS_Service service = new client.CustomerWS_Service();
+                        client.CustomerWS port = service.getCustomerWSPort();
+                         // TODO initialize WS operation arguments here
+                        java.lang.String username = request.getParameter("Username");
+                        java.lang.String pass = request.getParameter("Password");
+                        // TODO process result here
+                        result = port.login(username, pass);
+                        if(result) {
+                            session.setAttribute("username", username);
+                            response.sendRedirect("index.jsp?userName=" + session.getAttribute("username"));
+                        } 
+                    } catch (Exception ex) {
+                        // TODO handle custom exceptions here
+                    }
+                }
+            }
+        %>
+    <%-- end web service invocation --%>
+    <%
+        if("POST".equalsIgnoreCase(request.getMethod())) {
+            if(request.getAttribute("submit") != null) {
+                session.setAttribute("isbn1", request.getAttribute("childIsbn"));
+                response.sendRedirect("checkout.jsp");
+            }
+        }
+    %>
+    <!-- header -->
 <div class="header" id="home" style ="background-color: #472C00">
 	<div class="container">
 		<ul>
+                    <%if(result == false && request.getParameter("userName")== null) {%>
 		    <li> <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign In </a></li>
 			<li> <a href="#" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sign Up </a></li>
+                     <%} else{%>
+                        <li> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> <%=session.getAttribute("username")%> </a></li>
+                        <li> <a href="index.jsp"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Logout </a></li>
+                        <%result = false;%>
+                        <%}%>
 			<li><i class="fa fa-phone" aria-hidden="true"></i> Call : +63(2) 891-0837</li>
 			<li><i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:bshack@gmail.com">bshack@gmail.com</a></li>
 		</ul>
@@ -166,18 +226,18 @@
 						<div class="modal-body modal-body-sub_agile">
 						<div class="col-md-8 modal_body_left modal_body_left1">
 						<h3 class="agileinfo_sign">Sign In <span>Now</span></h3>
-									<form action="#" method="post">
+                                                <form method="post">
 							<div class="styled-input agile-styled-input-top">
-								<input type="text" name="Email" required="">
-								<label>Email</label>
+								<input type="text" name="Username" required="">
+								<label>Username</label>
 								<span></span>
 							</div>
 							<div class="styled-input">
-								<input type="email" name="Password" required=""> 
+								<input type="password" name="Password" required=""> 
 								<label>Password</label>
 								<span></span>
 							</div> 
-							<input type="submit" value="Sign In">
+							<input type="submit" name="signin" value="Sign In">
 						</form>
 							<div class="clearfix"></div>
 							<p><a href="#" data-toggle="modal" data-target="#myModal2" > Don't have an account?</a></p>
@@ -200,7 +260,7 @@
 						<div class="modal-body modal-body-sub_agile">
 						<div class="col-md-8 modal_body_left modal_body_left1">
 						<h3 class="agileinfo_sign">Sign Up <span>Now</span></h3>
-						 <form action="#" method="post">
+						 <form  method="post">
 							<div class="styled-input agile-styled-input-top">
 								<input type="text" name="Username" required="">
 								<label>Username</label>
@@ -227,25 +287,35 @@
 								<span></span>
 							</div>        
 							<div class="styled-input">
-								<input type="text" name="Address 1" required="">
-								<label>Address 1</label>
+								<input type="text" name="Street" required="">
+								<label>Street</label>
 								<span></span>
 							</div>   
 							<div class="styled-input">
-								<input type="text" name="Address 2" required="">
-								<label>Address 2</label>
+								<input type="text" name="City" required="">
+								<label>City</label>
 								<span></span>
 							</div> 
 							<div class="styled-input">
-								<input type="text" name="Longtitude" required="">
-								<label>Longitude</label>
+								<input type="text" name="Province" required="">
+								<label>Province</label>
 								<span></span>
 							</div>      
 							<div class="styled-input">
+								<input type="text" name="Zip" required="">
+								<label>Zip</label>
+								<span></span>
+							</div> 
+                                                        <div class="styled-input">
+								<input type="text" name="Longitude" required="">
+								<label>Latitude</label>
+								<span></span>
+							</div>    
+                                                        <div class="styled-input">
 								<input type="text" name="Latitude" required="">
 								<label>Latitude</label>
 								<span></span>
-							</div>      
+							</div>    
 							<div class="styled-input">
 								<input type="text" name="Credit Card" required="">
 								<label>Credit Card</label>
@@ -256,7 +326,7 @@
 								<label>CV</label>
 								<span></span>
 							</div>   
-							<input type="submit" value="Sign Up">
+							<input type="submit" name="signup" value="Sign Up" >
 						</form>
 							<div class="clearfix"></div>
 							<p><a href="#">By clicking register, you agree to our terms</a></p>
@@ -424,6 +494,8 @@
 			<div class="clearfix"></div>
 	   </div>							
 <!--/grids-->
+<%String isbn = "";%>
+<input type="hidden" name="isbn" id="isbn" value=" "/>
 <!-- /new_arrivals -->
 	<div class="new_arrivals_agile_w3ls_info"> 
 		<div class="container">
@@ -446,7 +518,8 @@
 										<img src="<%=childBooks.get(i).get(9)%>" alt="" class="pro-image-back">
 											<div class="men-cart-pro">
 												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
+                                                                                                        <c:set value="<%=childBooks.get(i).get(0)%>" var="childId"></c:set>
+                                                                                                        <a href="single.jsp?bookId=${childId}" class="link-product-add-cart">Quick View</a>
 												</div>
 											</div>											
 									</div>
@@ -458,18 +531,18 @@
 											<span class="item_price"><%=childBooks.get(i).get(2)%></span>
 										</div>
 										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
+															<form action="" method="post">
 																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Amal Unbound" />
-																	<input type="hidden" name="amount" value="450.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
+                                                                                                                                    <input type="hidden" name="cmd" value="_cart" />
+                                                                                                                                    <input type="hidden" name="add" value="1" />
+                                                                                                                                    <input type="hidden" name="business" value=" " />
+                                                                                                                                    <input type="hidden" name="item_name" value="<%=childBooks.get(i).get(1)%><%="-"%><%=childBooks.get(i).get(0)%>" />
+                                                                                                                                    <input type="hidden" name="amount" value="<%=childBooks.get(i).get(2)%>" />
+                                                                                                                                    <input type="hidden" name="discount_amount" value="0.00" />
+                                                                                                                                    <input type="hidden" name="currency_code" value="PHP" />
+                                                                                                                                    <input type="hidden" name="return" value=" "/>
+                                                                                                                                    <input type="hidden" name="cancel_return" value=" " />
+                                                                                                                                    <input type="submit" name="submit" value="Add to cart" class="button" />
 																</fieldset>
 															</form>
 														</div>
@@ -487,20 +560,21 @@
 							<div class="col-md-3 product-men">
 								<div class="men-pro-item simpleCart_shelfItem">
 									<div class="men-thumb-item">
-										<img src="images/w1.jpg" alt="" class="pro-image-front">
-										<img src="images/w1.jpg" alt="" class="pro-image-back">
+                                                                            <img src="<%=classicBooks.get(i).get(9)%>" alt="" class="pro-image-front">
+										<img src="<%=classicBooks.get(i).get(9)%>" alt="" class="pro-image-back">
 											<div class="men-cart-pro">
 												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
+                                                                                                        <c:set value="<%=classicBooks.get(i).get(0)%>" var="classicId"></c:set>
+													<a href="single.jsp?bookId=${classicId}" class="link-product-add-cart">Quick View</a>
 												</div>
 											</div>											
 									</div>
 									<div class="item-info-product ">
-										<h4><a href="single.jsp">The Handmaid's Tale</a></h4>
-										<h5><a href="single.jsp">Margaret Atwood</a></h5>
+										<h4><a href="single.jsp"><%=classicBooks.get(i).get(1)%></a></h4>
+										<h5><a href="single.jsp"><%=classicBooks.get(i).get(3)%></a></h5>
 										<div class="info-product-price">
 										
-											<span class="item_price">Php950.99</span>
+											<span class="item_price"><%=classicBooks.get(i).get(2)%></span>
 										</div>
 										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
 															<form action="#" method="post">
@@ -508,9 +582,9 @@
 																	<input type="hidden" name="cmd" value="_cart" />
 																	<input type="hidden" name="add" value="1" />
 																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="The Handmaid's Tale" />
-																	<input type="hidden" name="amount" value="950.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
+																	<input type="hidden" name="item_name" value="<%=classicBooks.get(i).get(1)%><%="-"%><%=classicBooks.get(i).get(0)%>" />
+																	<input type="hidden" name="amount" value="<%=classicBooks.get(i).get(2)%>" />
+																	<input type="hidden" name="discount_amount" value="0.00" />
 																	<input type="hidden" name="currency_code" value="PHP" />
 																	<input type="hidden" name="return" value=" " />
 																	<input type="hidden" name="cancel_return" value=" " />
@@ -522,294 +596,30 @@
 									</div>
 								</div>
 							</div> 
-                                                        <%}%> <!--
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/w2.jpg" alt="" class="pro-image-front">
-										<img src="images/w2.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Animal Farm</a></h4>
-										<h5><a href="single.jsp">George Orwell</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php250.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Animal Farm" />
-																	<input type="hidden" name="amount" value="250.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-                            <div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/w3.jpg" alt="" class="pro-image-front">
-										<img src="images/w3.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">The Great Gatsby</a></h4>
-										<h5><a href="single.jsp">F. Scott Fitzgerald</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php450.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="The Great Gatsby" />
-																	<input type="hidden" name="amount" value="450.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/w4.jpg" alt="" class="pro-image-front">
-										<img src="images/w4.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Macbeth</a></h4>
-										<h5><a href="single.jsp">William Shakespeare</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php350.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Macbeth" />
-																	<input type="hidden" name="amount" value="350.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/w5.jpg" alt="" class="pro-image-front">
-										<img src="images/w5.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Hatchet</a></h4>
-										<h5><a href="single.jsp">Gary Paulsen</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php250.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Hatchet" />
-																	<input type="hidden" name="amount" value="250.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/w6.jpg" alt="" class="pro-image-front">
-										<img src="images/w6.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Anthem</a></h4>
-										<h5><a href="single.jsp">Ayn Rand</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php950.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Anthem" />
-																	<input type="hidden" name="amount" value="950.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/w7.jpg" alt="" class="pro-image-front">
-										<img src="images/w7.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">The Shining</a></h4>
-										<h5><a href="single.jsp">Stephen King</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php350.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="The Shining" />
-																	<input type="hidden" name="amount" value="350.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/w8.jpg" alt="" class="pro-image-front">
-										<img src="images/w8.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Emma</a></h4>
-										<h5><a href="single.jsp">Jane Austen</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php350.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Emma" />
-																	<input type="hidden" name="amount" value="350.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>-->
+                                                        <%}%> 
 							<div class="clearfix"></div>
 						</div>
 					 <!--//tab_two-->
 						<div class="tab3">
+                                                    <%for(int i=0; i<sizeOfList; i++) {%>
 							<div class="col-md-3 product-men">
 								<div class="men-pro-item simpleCart_shelfItem">
 									<div class="men-thumb-item">
-										<img src="images/b1.jpg" alt="" class="pro-image-front">
-										<img src="images/b1.jpg" alt="" class="pro-image-back">
+                                                                            <img src="<%=cookBooks.get(i).get(9)%>" alt="" class="pro-image-front">
+										<img src="<%=cookBooks.get(i).get(9)%>" alt="" class="pro-image-back">
 											<div class="men-cart-pro">
 												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
+                                                                                                        <c:set value="<%=cookBooks.get(i).get(0)%>" var="cookId"></c:set>
+                                                                                                        <a href="single.jsp?bookId=${cookId}" class="link-product-add-cart">Quick View</a>
 												</div>
 											</div>											
 									</div>
 									<div class="item-info-product ">
-										<h4><a href="single.jsp">The Fast Diet</a></h4>
-										<h5><a href="single.jsp">Dr. Michael Mosley</a></h5>
+										<h4><a href="single.jsp"><%=cookBooks.get(i).get(1)%></a></h4>
+										<h5><a href="single.jsp"><%=cookBooks.get(i).get(3)%></a></h5>
 										<div class="info-product-price">
 										
-											<span class="item_price">Php1050.99</span>
+											<span class="item_price"><%=cookBooks.get(i).get(2)%></span>
 										</div>
 										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
 															<form action="#" method="post">
@@ -817,9 +627,9 @@
 																	<input type="hidden" name="cmd" value="_cart" />
 																	<input type="hidden" name="add" value="1" />
 																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="The Fast Diet" />
-																	<input type="hidden" name="amount" value="1050.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
+																	<input type="hidden" name="item_name" value="<%=cookBooks.get(i).get(1)%><%="-"%><%=cookBooks.get(i).get(0)%>" />
+																	<input type="hidden" name="amount" value="<%=cookBooks.get(i).get(2)%>" />
+																	<input type="hidden" name="discount_amount" value="0.00" />
 																	<input type="hidden" name="currency_code" value="PHP" />
 																	<input type="hidden" name="return" value=" " />
 																	<input type="hidden" name="cancel_return" value=" " />
@@ -831,293 +641,30 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/b2.jpg" alt="" class="pro-image-front">
-										<img src="images/b2.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Food</a></h4>
-										<h5><a href="single.jsp">Mark Hyman, MD</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php1250.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Food" />
-																	<input type="hidden" name="amount" value="1250.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-                            <div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/b3.jpg" alt="" class="pro-image-front">
-										<img src="images/b3.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Appetites</a></h4>
-										<h5><a href="single.jsp">Anthony Bourdain</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php950.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Appetites" />
-																	<input type="hidden" name="amount" value="950.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/b4.jpg" alt="" class="pro-image-front">
-										<img src="images/b4.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Cook Dork</a></h4>
-										<h5><a href="single.jsp">Bianca Bosker</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php350.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Cook Dork" />
-																	<input type="hidden" name="amount" value="350.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/b5.jpg" alt="" class="pro-image-front">
-										<img src="images/b5.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">What She Ate</a></h4>
-										<h5><a href="single.jsp">Laura Shapiro</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php250.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="What She Ate" />
-																	<input type="hidden" name="amount" value="250.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/b6.jpg" alt="" class="pro-image-front">
-										<img src="images/b6.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">The Dorito Effect</a></h4>
-										<h5><a href="single.jsp">Mark Schatzker</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php950.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="The Dorito Effect" />
-																	<input type="hidden" name="amount" value="950.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/b7.jpg" alt="" class="pro-image-front">
-										<img src="images/b7.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Thug Kitchen</a></h4>
-										<h5><a href="single.jsp">Thug Kitchen</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php1350.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Thug Kitchen" />
-																	<input type="hidden" name="amount" value="1350.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/b8.jpg" alt="" class="pro-image-front">
-										<img src="images/b8.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Locally Laid</a></h4>
-										<h5><a href="single.jsp">Lucie B. Amundsen</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php350.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Locally Laid" />
-																	<input type="hidden" name="amount" value="350.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
+                                                        <%}%>
 							<div class="clearfix"></div>
 						</div>
 						<!--//TAB3-->
 						<div class="tab4">
+                                                    <%for(int i=0; i<sizeOfList; i++) {%>
 							<div class="col-md-3 product-men">
 								<div class="men-pro-item simpleCart_shelfItem">
 									<div class="men-thumb-item">
-										<img src="images/s1.jpg" alt="" class="pro-image-front">
-										<img src="images/s1.jpg" alt="" class="pro-image-back">
+                                                                                <img src="<%=graphBooks.get(i).get(9)%>" alt="" class="pro-image-front">
+										<img src="<%=graphBooks.get(i).get(9)%>" alt="" class="pro-image-back">
 											<div class="men-cart-pro">
 												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
+                                                                                                    <c:set value="<%=graphBooks.get(i).get(0)%>" var="graphId"></c:set>
+                                                                                                    <a href="single.jsp?bookId=${graphId}" class="link-product-add-cart">Quick View</a>
 												</div>
 											</div>											
 									</div>
 									<div class="item-info-product ">
-										<h4><a href="single.jsp">Runaways Volume 1</a></h4>
-										<h5><a href="single.jsp">Rainbow Rowell</a></h5>
+										<h4><a href="single.jsp"><%=graphBooks.get(i).get(1)%></a></h4>
+										<h5><a href="single.jsp"><%=graphBooks.get(i).get(3)%></a></h5>
 										<div class="info-product-price">
 										
-											<span class="item_price">Php1150.99</span>
+											<span class="item_price"><%=graphBooks.get(i).get(2)%></span>
 										</div>
 										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
 															<form action="#" method="post">
@@ -1125,9 +672,9 @@
 																	<input type="hidden" name="cmd" value="_cart" />
 																	<input type="hidden" name="add" value="1" />
 																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Runaways Volume 1" />
-																	<input type="hidden" name="amount" value="1150.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
+																	<input type="hidden" name="item_name" value="<%=graphBooks.get(i).get(1)%><%="-"%><%=graphBooks.get(i).get(0)%>" />
+																	<input type="hidden" name="amount" value="<%=graphBooks.get(i).get(2)%>" />
+																	<input type="hidden" name="discount_amount" value="0.00" />
 																	<input type="hidden" name="currency_code" value="PHP" />
 																	<input type="hidden" name="return" value=" " />
 																	<input type="hidden" name="cancel_return" value=" " />
@@ -1139,272 +686,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/s2.jpg" alt="" class="pro-image-front">
-										<img src="images/s2.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Black Panther Book 5</a></h4>
-										<h5><a href="single.jsp">Ta-Nehisi Coates</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php750.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Black Panther Book 5" />
-																	<input type="hidden" name="amount" value="750.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-                            <div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/s3.jpg" alt="" class="pro-image-front">
-										<img src="images/s3.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Hawkeye: Kate Bishop</a></h4>
-										<h5><a href="single.jsp">Kelly Thompson</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php550.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Hawkeye: Kate Bishop" />
-																	<input type="hidden" name="amount" value="550.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/s4.jpg" alt="" class="pro-image-front">
-										<img src="images/s4.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Snotgirl Volume 2</a></h4>
-										<h5><a href="single.jsp">Brian Lee O' Malley</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php1350.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Snotgirl Volume 2" />
-																	<input type="hidden" name="amount" value="1350.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/s5.jpg" alt="" class="pro-image-front">
-										<img src="images/s5.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Saga #52</a></h4>
-										<h5><a href="single.jsp">Brian K. Vaughan</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php950.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Saga #52" />
-																	<input type="hidden" name="amount" value="950.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/s6.jpg" alt="" class="pro-image-front">
-										<img src="images/s6.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Star Trek Discovery</a></h4>
-										<h5><a href="single.jsp">Mike Johnson</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php950.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Star Trek Discovery" />
-																	<input type="hidden" name="amount" value="950.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/s7.jpg" alt="" class="pro-image-front">
-										<img src="images/s7.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Paper Girls 4</a></h4>
-										<h5><a href="single.jsp">Brian K. Vaughan</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php1150.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Paper Girls 4" />
-																	<input type="hidden" name="amount" value="1150.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
-								<div class="col-md-3 product-men">
-								<div class="men-pro-item simpleCart_shelfItem">
-									<div class="men-thumb-item">
-										<img src="images/s8.jpg" alt="" class="pro-image-front">
-										<img src="images/s8.jpg" alt="" class="pro-image-back">
-											<div class="men-cart-pro">
-												<div class="inner-men-cart-pro">
-													<a href="single.jsp" class="link-product-add-cart">Quick View</a>
-												</div>
-											</div>											
-									</div>
-									<div class="item-info-product ">
-										<h4><a href="single.jsp">Lumberjanes</a></h4>
-										<h5><a href="single.jsp">Holly Black</a></h5>
-										<div class="info-product-price">
-										
-											<span class="item_price">Php250.99</span>
-										</div>
-										<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="Lumberjanes" />
-																	<input type="hidden" name="amount" value="250.99" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
-																	<input type="hidden" name="currency_code" value="PHP" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="submit" name="submit" value="Add to cart" class="button" />
-																</fieldset>
-															</form>
-														</div>
-																			
-									</div>
-								</div>
-							</div>
+                                                        <%}%>
+                                                        
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -1603,8 +886,39 @@
 <script>
 	// Mini Cart
 	paypal.minicart.render({
-		action: '#'
+		action: 'checkout.jsp',
+                strings: {
+                    button: "Checkout"            
+                }
 	});
+        
+        paypal.minicart.cart.on('checkout', function (evt) {
+            var items = this.items();
+            var cart = [];
+            var quantity = [];
+            
+            for(var i=0; i<items.length; i++) {
+                cart.push()(items[i].get("item_name").toString().substr(items[0].get("item_name").toString().length-13));
+                quantity.push(items[i].get("quantity"));
+            }
+            
+            $("#isbn").val(10);    
+            $.ajax({
+                    type: "post",
+                    url: "checkout.jsp", //this is my servlet
+                    data: "input=" + $("isbn").val(),
+                   
+                });
+        });
+        /*
+        paypal.minicart.cart.items().forEach(
+            console.log.bind(console)
+        );
+
+        $.each( paypal.minicart.cart.items(), function(key, element) {
+            alert('key: ' + key + '\n' + 'value: ' + element);
+        });
+*/
 
 	if (~window.location.search.indexOf('reset=true')) {
 		paypal.minicart.reset();
@@ -1653,6 +967,7 @@
 			event.preventDefault();
 			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
 		});
+                
 	});
 </script>
 <!-- here stars scrolling icon -->

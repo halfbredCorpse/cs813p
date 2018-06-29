@@ -4,6 +4,8 @@
     Author     : Aristan
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -26,6 +28,38 @@
 <link href="//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,900,900italic,700italic" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <%-- start web service invocation --%>
+    <%
+        List<Object> book = new ArrayList<Object>();
+        try {
+            client.CustomerWS_Service service = new client.CustomerWS_Service();
+            client.CustomerWS port = service.getCustomerWSPort();
+             // TODO initialize WS operation arguments here
+            java.lang.String isbn = request.getParameter("bookId");
+            // TODO process result here
+            book = port.returnSingleBook(isbn);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            out.println(ex);
+        }
+    %>
+    <%-- end web service invocation --%>
+    <%-- start web service invocation --%>
+    <%!
+        public String getGenre(int genreId) {
+            try {
+                client.CustomerWS_Service service = new client.CustomerWS_Service();
+                client.CustomerWS port = service.getCustomerWSPort();
+                java.lang.String result = port.getGenre(genreId);
+                return result;
+            } catch (Exception ex) {
+                // TODO handle custom exceptions here
+            }
+            return null;
+        }
+    %>
+    <%-- end web service invocation --%>
+
 <!-- header -->
 <div class="header" id="home" style ="background-color: #472C00">
 	<div class="container">
@@ -190,13 +224,23 @@
 								<span></span>
 							</div>        
 							<div class="styled-input">
-								<input type="text" name="Address 1" required="">
-								<label>Address 1</label>
+								<input type="text" name="Street" required="">
+								<label>Street</label>
 								<span></span>
 							</div>   
 							<div class="styled-input">
-								<input type="text" name="Address 2" required="">
-								<label>Address 2</label>
+								<input type="text" name="City" required="">
+								<label>City</label>
+								<span></span>
+							</div> 
+							<div class="styled-input">
+								<input type="text" name="Province" required="">
+								<label>Province</label>
+								<span></span>
+							</div>      
+							<div class="styled-input">
+								<input type="text" name="Zip" required="">
+								<label>Zip</label>
 								<span></span>
 							</div> 
 							<div class="styled-input">
@@ -242,7 +286,7 @@
 					
 					<ul class="slides">
 						<li data-thumb="images/m1.jpg">
-							<div class="thumb-image"> <img src="images/amal1.jpg" data-imagezoom="true" class="img-responsive"> </div>
+							<div class="thumb-image"> <img src="<%=book.get(9)%>" data-imagezoom="true" class="img-responsive"> </div>
 						</li>
                                                 <!--
 						<li data-thumb="images/am2.jpg">
@@ -256,9 +300,9 @@
 			</div>
 		</div>
 		<div class="col-md-8 single-right-left simpleCart_shelfItem">
-					<h3>Amal Unbound</h3>
-					<h4>Aisha Saeed</h4>
-					<p><span class="item_price">Php450.99</span> <del>- Php550.99</del></p>
+					<h3><%=book.get(1)%></h3>
+					<h4><%=book.get(3)%></h4>
+					<p><span class="item_price"><%=book.get(2)%></span></p>
 					<div class="rating1">
 						<span class="starRating">
 							<input id="rating5" type="radio" name="rating" value="5">
@@ -327,12 +371,12 @@
 
 							<div class="single_page_agile_its_w3ls">
 						   		<ul>
-                                                                <li><b>ISBN-13:</b> 978-0399544682</li>   
-								<li><b>Author:</b> Aisha Saeed<br></li>
-                                                                <li><b>Publisher:</b> Nancy Paulsen Books<br></li>
-								<li><b>Date Published:</b> May 8, 2018<br></li>
-                                                                <li><b>Genre:</b> Children's Books<br></li>
-								<li><b>Book Format:</b> Hardcover (240 pages)</li>
+                                                                <li><b>ISBN-13:</b> <%=book.get(0)%></li>   
+								<li><b>Author:</b> <%=book.get(3)%><br></li>
+                                                                <li><b>Publisher:</b> <%=book.get(4)%><br></li>
+								<li><b>Date Published:</b> <%=book.get(5)%><br></li>
+                                                                <li><b>Genre:</b> <%=getGenre(Integer.parseInt(book.get(8).toString()))%><br></li>
+								<li><b>Book Format:</b> <%=book.get(6)%>)</li>
 								</ul>
 							</div>
 						</div>
@@ -689,7 +733,10 @@
 <script>
 	// Mini Cart
 	paypal.minicart.render({
-		action: '#'
+		action: 'checkout.jsp'
+                strings: {
+                    button: "Checkout"
+                }
 	});
 
 	if (~window.location.search.indexOf('reset=true')) {

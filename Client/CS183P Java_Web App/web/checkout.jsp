@@ -24,6 +24,9 @@
 <link href="//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,900,900italic,700italic" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <%
+        out.println(session.getAttribute("isbn"));
+    %>
 <!-- header -->
 <div class="header" id="home" style ="background-color: #472C00">
 	<div class="container">
@@ -188,13 +191,23 @@
 								<span></span>
 							</div>        
 							<div class="styled-input">
-								<input type="text" name="Address 1" required="">
-								<label>Address 1</label>
+								<input type="text" name="Street" required="">
+								<label>Street</label>
 								<span></span>
 							</div>   
 							<div class="styled-input">
-								<input type="text" name="Address 2" required="">
-								<label>Address 2</label>
+								<input type="text" name="City" required="">
+								<label>City</label>
+								<span></span>
+							</div> 
+							<div class="styled-input">
+								<input type="text" name="Province" required="">
+								<label>Province</label>
+								<span></span>
+							</div>      
+							<div class="styled-input">
+								<input type="text" name="Zip" required="">
+								<label>Zip</label>
 								<span></span>
 							</div> 
 							<div class="styled-input">
@@ -273,7 +286,7 @@
 								</div>
 							</div>
 						</td>
-						<td class="invert">Sputnik Sweetheart by Haruki Murakami</td>
+						<td class="invert"><%=session.getAttribute("cartItems")%></td>
 						
 						<td class="invert">Php290.00</td>
 						<td class="invert">
@@ -581,7 +594,10 @@
 <script>
 	// Mini Cart
 	paypal.minicart.render({
-		action: '#'
+		action: 'checkout.jsp'
+                strings: {
+                    button: "Checkout"
+                }
 	});
 
 	if (~window.location.search.indexOf('reset=true')) {

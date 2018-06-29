@@ -188,13 +188,23 @@
 								<span></span>
 							</div>        
 							<div class="styled-input">
-								<input type="text" name="Address 1" required="">
-								<label>Address 1</label>
+								<input type="text" name="Street" required="">
+								<label>Street</label>
 								<span></span>
 							</div>   
 							<div class="styled-input">
-								<input type="text" name="Address 2" required="">
-								<label>Address 2</label>
+								<input type="text" name="City" required="">
+								<label>City</label>
+								<span></span>
+							</div> 
+							<div class="styled-input">
+								<input type="text" name="Province" required="">
+								<label>Province</label>
+								<span></span>
+							</div>      
+							<div class="styled-input">
+								<input type="text" name="Zip" required="">
+								<label>Zip</label>
 								<span></span>
 							</div> 
 							<div class="styled-input">
@@ -813,7 +823,10 @@
 <script>
 	// Mini Cart
 	paypal.minicart.render({
-		action: '#'
+		action: 'checkout.jsp'
+                strings: {
+                    button: "Checkout"
+                }
 	});
 
 	if (~window.location.search.indexOf('reset=true')) {

@@ -86,7 +86,6 @@ public class MainFrame extends javax.swing.JFrame {
         cd.changeAllFont(mainPanel, cd.createFont("fonts/CircularStd-Bold.otf", 14));
         
         lblWelcome.setFont(lblWelcome.getFont().deriveFont(18F));
-        lblName.setFont(lblName.getFont().deriveFont(18F));
         
         selectedColor = new Color(221, 188, 149);
         hoverColor = new Color(205,205,192);
@@ -234,7 +233,6 @@ public class MainFrame extends javax.swing.JFrame {
         navMenu = new javax.swing.JPanel();
         welcomePanel = new javax.swing.JPanel();
         lblWelcome = new javax.swing.JLabel();
-        lblName = new javax.swing.JLabel();
         navBtns = new javax.swing.JPanel();
         btnHome = new javax.swing.JButton();
         btnCategories = new javax.swing.JButton();
@@ -432,15 +430,11 @@ public class MainFrame extends javax.swing.JFrame {
         navMenu.setPreferredSize(new java.awt.Dimension(220, 717));
 
         welcomePanel.setBackground(new java.awt.Color(255, 255, 255));
-        welcomePanel.setLayout(new java.awt.GridLayout(2, 0));
+        welcomePanel.setLayout(new java.awt.GridLayout());
 
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblWelcome.setText("Welcome");
         welcomePanel.add(lblWelcome);
-
-        lblName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblName.setText(user.get(4).toString());
-        welcomePanel.add(lblName);
 
         navBtns.setBackground(new java.awt.Color(255, 255, 255));
         navBtns.setLayout(new java.awt.GridLayout(6, 0));
@@ -1228,7 +1222,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblCopyright1;
     private javax.swing.JLabel lblCopyright2;
     private javax.swing.JLabel lblHomePage;
-    private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblNewArrivals;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel mainHomeContentPanel;

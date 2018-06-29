@@ -18,8 +18,8 @@
     </target>
     <target name="wsimport-client-CustomerWS" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/CustomerWS"/>
-        <property name="wsdl-CustomerWS" location="xml-resources/web-service-references/CustomerWS/wsdl/localhost_8080/CustomerWS/CustomerWS.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/CustomerWS" destdir="${build.generated.dir}/jax-wsCache/CustomerWS" wsdl="${wsdl-CustomerWS}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/CustomerWS/CustomerWS?wsdl" xnocompile="true" xendorsed="true">
+        <property name="wsdl-CustomerWS" location="xml-resources/web-service-references/CustomerWS/wsdl/localhost_8080/ClientWS/CustomerWS.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/CustomerWS" destdir="${build.generated.dir}/jax-wsCache/CustomerWS" wsdl="${wsdl-CustomerWS}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/ClientWS/CustomerWS?wsdl" xnocompile="true" xendorsed="true">
             <depends file="${wsdl-CustomerWS}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/CustomerWS"/>
         </wsimport>
